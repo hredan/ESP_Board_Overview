@@ -1,2 +1,4 @@
 /tools
 boards*
+__pycache__
+core_list.txt
