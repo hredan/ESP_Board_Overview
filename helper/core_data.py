@@ -36,6 +36,8 @@ class CoreData:
                     matchPartition = re.match(name + r"\.menu\.eesz\.(.+)\.build\.flash_size=(.+)", line)
                     if matchPartition:
                         flash_partition = matchPartition.group(1)
+                        if flash_partition == "autoflash":
+                            continue
                         if "flash_partitions" not in boards[name]:
                             boards[name]["flash_partitions"] = [flash_partition]
                         else:
@@ -43,10 +45,11 @@ class CoreData:
 
                         flash_size = matchPartition.group(2)
                         if "flash_size" in boards[name]:
-                            if boards[name]["flash_size"] != flash_size:
-                                print(f"Error: {name} has different flash size {boards[name]['flash_size']} != {flash_size}")
-                            else:
-                                boards[name]["flash_sheme"] = flash_size
+                            if flash_size not in boards[name]["flash_size"]:
+                                print(f"Warning: {name} has more than on flash size {boards[name]['flash_size']} {flash_size}")
+                                boards[name]["flash_size"].append(flash_size)
+                        else:
+                            boards[name]["flash_size"] = [flash_size]
                 else:
                     matchPartition = re.match(name + r"\.build\.flash_size=(.+)", line)
                     if matchPartition:
@@ -57,9 +60,9 @@ class CoreData:
         boardsNames = self.boards.keys()
         for boardName in boardsNames:
             boardEntries = self.boards[boardName].keys()
-            if not 'LED_BUILDIN' in boardEntries:
-                print(f"Error: could not find LED Entry for {boardName}")
-                self.boards[boardName]["LED_BUILDIN"]="N/A"
+            if not 'LED_BUILTIN' in boardEntries:
+                print(f"Error: could not find LED Entry for {boardName} variant: {self.boards[boardName]['variant']}")
+                self.boards[boardName]["LED_BUILTIN"]="N/A"
 
     def set_boars_without_flash_size(self):
         boardsNames = self.boards.keys()
@@ -76,27 +79,35 @@ class CoreData:
                 filePath = f"{self.core_path}/variants/{self.boards[boardName]["variant"]}/pins_arduino.h"
                 if not os.path.isfile(filePath):
                     print(f"Error: could not found {filePath}")
-                    self.boards[boardName]["LED_BUILDIN"]="N/A"
+                    self.boards[boardName]["LED_BUILTIN"]="N/A"
                 else:
                     with open(filePath, 'r') as infile:
                         for line in infile:                    
                             if self.core_name == "esp8266":
-                                matchBuildInLED = re.match(r"^.+ LED_BUILTIN (\d+)", line)
+                                matchBuildInLED = re.match(r"^.+ LED_BUILTIN +\(?(\d+)\)?", line)
+                                # #define LED_BUILTIN    (13)
+                                # #define LED_BUILTIN    13
                             else:
                                 matchBuildInLED = re.match(r"^.+ LED_BUILTIN = (\d+)", line)
 
                             if matchBuildInLED:
-                                self.boards[boardName]["LED_BUILDIN"]=matchBuildInLED.group(1)
-                                # print(f"add {boardName} LED GPIO: {self.boards[boardName]['LED_BUILDIN']}")
-                            else:
-                                self.boards[boardName]["LED_BUILDIN"]="N/A"
+                                builtin_led_gpio = matchBuildInLED.group(1)
+                                self.boards[boardName]["LED_BUILTIN"]=builtin_led_gpio
+                                # print(f"add {boardName} LED GPIO: {self.boards[boardName]['LED_BUILTIN']}")
             else:
                 # print(f"Error: could not find variant for {boardName}")
-                self.boards[boardName]["LED_BUILDIN"]="N/A"
+                self.boards[boardName]["LED_BUILTIN"]="N/A"
     def printTable(self):
         names = sorted(self.boards.keys())
         for boardName in names:
-            print(f"{self.boards[boardName]['name']} | {boardName} | {self.boards[boardName]['LED_BUILDIN']} | {self.boards[boardName]['flash_size']}")
+            print(f"{self.boards[boardName]['name']} | {boardName} | {self.boards[boardName]['LED_BUILTIN']} | {self.boards[boardName]['flash_size']}")
+    
+    def export_csv(self):
+        names = sorted(self.boards.keys())
+        with open(f"{self.core_name}.csv", "w") as file:
+            file.write("name,board,LED,flash_size\n")
+            for boardName in names:
+                file.write(f"{self.boards[boardName]['name']},{boardName},{self.boards[boardName]['LED_BUILTIN']},{self.boards[boardName]['flash_size']}\n")
 
     def print_data(self):
         print(self.data)

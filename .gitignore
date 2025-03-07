@@ -1,4 +1,5 @@
 /tools
 boards*
 __pycache__
-core_list.txt
+core_list*.txt
+*.csv

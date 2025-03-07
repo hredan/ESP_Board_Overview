@@ -40,7 +40,7 @@ if __name__ == "__main__":
         cd = CoreData(core_info["core_name"], core_info["installed_version"])
         print(f"core: {core_info['core_name']}")
         print(f"number of boards: {len(cd.boards)}")
-        cd.printTable()
+        cd.export_csv()
 
 
         # print(core_data.keys())
