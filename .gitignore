@@ -2,5 +2,5 @@
 boards*
 __pycache__
 core_list*.txt
-*.csv
+/*.csv
 node_modules
