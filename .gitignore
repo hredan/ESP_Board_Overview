@@ -3,3 +3,4 @@ boards*
 __pycache__
 core_list*.txt
 *.csv
+node_modules

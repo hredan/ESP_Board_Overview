@@ -3,12 +3,6 @@ import os.path
 
 from helper.core_data import CoreData
 
-
-def showList(boards):
-    names = sorted(boards.keys())
-    for board in names:
-        print(f"{board}\t{boards[board]['name']}\t{boards[board]['LED_BUILDIN']}")
-
 def get_installed_core_info(core_list_path):
     core_list = []
     if os.path.exists(core_list_path):
@@ -40,6 +34,7 @@ if __name__ == "__main__":
         cd = CoreData(core_info["core_name"], core_info["installed_version"])
         print(f"core: {core_info['core_name']}")
         print(f"number of boards: {len(cd.boards)}")
+        print(f"number of boards without led: {cd.num_of_boards_without_led}")
         cd.export_csv()
 
 

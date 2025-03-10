@@ -4,6 +4,7 @@ import os.path
 class CoreData:
     def __init__(self, core_name, core_version):
         self.core_name = core_name
+        self.num_of_boards_without_led = 0
         self.core_path = f"~/.arduino15/packages/{core_name}/hardware/{core_name}/{core_version}"
         if not os.path.exists(self.core_path):
             self.core_path = f"/root/.arduino15/packages/{core_name}/hardware/{core_name}/{core_version}"
@@ -23,6 +24,7 @@ class CoreData:
         name=""
         with open(self.boards_txt, 'r') as infile:
             for line in infile:
+                flash_size = None
                 matchBoard = re.match(r"(.+)\.name=(.+)", line)
                 if matchBoard:
                     name=matchBoard.group(1)
@@ -44,16 +46,17 @@ class CoreData:
                             boards[name]["flash_partitions"].append(flash_partition)
 
                         flash_size = matchPartition.group(2)
-                        if "flash_size" in boards[name]:
-                            if flash_size not in boards[name]["flash_size"]:
-                                print(f"Warning: {name} has more than on flash size {boards[name]['flash_size']} {flash_size}")
-                                boards[name]["flash_size"].append(flash_size)
-                        else:
-                            boards[name]["flash_size"] = [flash_size]
                 else:
                     matchPartition = re.match(name + r"\.build\.flash_size=(.+)", line)
                     if matchPartition:
-                        boards[name]["flash_size"] = matchPartition.group(1)
+                        flash_size = matchPartition.group(1)
+                if flash_size:
+                    if "flash_size" in boards[name]:
+                        if flash_size not in boards[name]["flash_size"]:
+                            print(f"Warning: {name} has more than on flash size {boards[name]['flash_size']} {flash_size}")
+                            boards[name]["flash_size"].append(flash_size)
+                    else:
+                        boards[name]["flash_size"] = [flash_size]
         return boards
     
     def set_boars_without_led(self):
@@ -63,6 +66,12 @@ class CoreData:
             if not 'LED_BUILTIN' in boardEntries:
                 print(f"Error: could not find LED Entry for {boardName} variant: {self.boards[boardName]['variant']}")
                 self.boards[boardName]["LED_BUILTIN"]="N/A"
+                filePath = f"{self.core_path}/variants/{self.boards[boardName]["variant"]}/pins_arduino.h"
+                if os.path.exists(filePath):
+                    with open(filePath, 'r') as infile:
+                            for line_num, line in enumerate(infile):
+                                if "LED_BUILTIN" in line:
+                                    print(f"{line_num} {line}")
 
     def set_boars_without_flash_size(self):
         boardsNames = self.boards.keys()
@@ -75,6 +84,7 @@ class CoreData:
     def find_led_builtin(self):
         boardsNames = self.boards.keys()
         for boardName in boardsNames:
+            found_led_entry = False
             if "variant" in self.boards[boardName]:
                 filePath = f"{self.core_path}/variants/{self.boards[boardName]["variant"]}/pins_arduino.h"
                 if not os.path.isfile(filePath):
@@ -93,21 +103,29 @@ class CoreData:
                             if matchBuildInLED:
                                 builtin_led_gpio = matchBuildInLED.group(1)
                                 self.boards[boardName]["LED_BUILTIN"]=builtin_led_gpio
+                                found_led_entry = True
+                                #break
                                 # print(f"add {boardName} LED GPIO: {self.boards[boardName]['LED_BUILTIN']}")
             else:
                 # print(f"Error: could not find variant for {boardName}")
                 self.boards[boardName]["LED_BUILTIN"]="N/A"
-    def printTable(self):
+            if not found_led_entry:
+                self.num_of_boards_without_led += 1
+
+    def printTable(self, ignore_missing_led=True):
         names = sorted(self.boards.keys())
         for boardName in names:
+            if ignore_missing_led and self.boards[boardName]["LED_BUILTIN"] == "N/A":
+                continue
             print(f"{self.boards[boardName]['name']} | {boardName} | {self.boards[boardName]['LED_BUILTIN']} | {self.boards[boardName]['flash_size']}")
     
-    def export_csv(self):
+    def export_csv(self, ignore_missing_led=True):
         names = sorted(self.boards.keys())
         with open(f"{self.core_name}.csv", "w") as file:
             file.write("name,board,LED,flash_size\n")
             for boardName in names:
-                file.write(f"{self.boards[boardName]['name']},{boardName},{self.boards[boardName]['LED_BUILTIN']},{self.boards[boardName]['flash_size']}\n")
-
+                if ignore_missing_led and self.boards[boardName]["LED_BUILTIN"] == "N/A":
+                    continue
+                file.write(f"{self.boards[boardName]['name']},{boardName},{self.boards[boardName]['LED_BUILTIN']},[{';'.join(self.boards[boardName]['flash_size'])}]\n")
     def print_data(self):
         print(self.data)
