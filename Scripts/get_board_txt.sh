@@ -1,6 +1,10 @@
 #!/bin/bash
 
+# This script downloads the arduino-cli tool and installs the last stable esp32 and esp8266 core.
 # For windows this script can be executed in the git bash.
+# Core source code URLs:
+# https://github.com/espressif/arduino-esp32
+# https://github.com/esp8266/Arduino
 
 TOOL_DIR="./tools"
 # https://github.com/arduino/arduino-cli
@@ -8,11 +12,6 @@ ARDUINO_CLI_VERSION="1.2.0"
 
 CORE_URL_ESP32="https://espressif.github.io/arduino-esp32/package_esp32_index.json"
 CORE_URL_ESP8266="https://arduino.esp8266.com/stable/package_esp8266com_index.json"
-
-# https://github.com/espressif/arduino-esp32
-EPS32_CORE_VERSION="3.1.3"
-ESP8266_CORE_VERSION="3.1.2"
-
 
 # set TOOL_URL and TOOL PATH (depends on OS)
 #check tool dir#
