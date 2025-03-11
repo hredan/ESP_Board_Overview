@@ -1,5 +1,6 @@
 import re
 import os.path
+import json
 
 from helper.core_data import CoreData
 
@@ -30,6 +31,9 @@ if __name__ == "__main__":
     script_path = os.path.realpath(os.path.dirname(__file__))
     core_list_path = os.path.join(script_path, "core_list.txt")
     core_info_list = get_installed_core_info(core_list_path)
+
+    with open('core_list.json', 'w', encoding='utf-8') as f:
+        json.dump(core_info_list, f, ensure_ascii=False, indent=4)
     for core_info in core_info_list:
         cd = CoreData(core_info["core_name"], core_info["installed_version"])
         print(f"core: {core_info['core_name']}")
