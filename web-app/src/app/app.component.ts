@@ -12,9 +12,11 @@ import * as coreList_input from '../../public/core_list.json';
 
 export class AppComponent {
   title = 'ESP-Board Overview';
-  coreList: Core[] = coreList_input;
+  coreList: Core[] = [];
   ngOnInit() {
-    console.log(this.coreList);
+    this.coreList = (coreList_input as any).default;
+    console.log(this.coreList.length);
+    console.log(this.coreList[1].core);
   }
 }
 
