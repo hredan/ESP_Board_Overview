@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, Router } from '@angular/router';
+import { ChildrenOutletContexts } from '@angular/router';
 
 import * as coreList_input from '../../public/core_list.json';
 
@@ -12,6 +13,11 @@ import * as coreList_input from '../../public/core_list.json';
 
 export class AppComponent {
   title = 'ESP-Board Overview';
+  constructor(private contexts: ChildrenOutletContexts) { }
+  getRouteAnimationData() {
+    return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
+  }
+
   coreList: Core[] = [];
   ngOnInit() {
     this.coreList = (coreList_input as any).default;
