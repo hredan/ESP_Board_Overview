@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet, Router } from '@angular/router';
+import { RouterOutlet, RouterLinkActive, RouterLink } from '@angular/router';
 import { ChildrenOutletContexts } from '@angular/router';
-import { AppRoutingModule } from './app.routes';
+// import { AppRoutingModule } from './app.routes';
 
 import * as coreList_input from '../../public/core_list.json';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, AppRoutingModule],
+  imports: [RouterOutlet, RouterLinkActive, RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 
 export class AppComponent {
   title = 'ESP-Board Overview';
-  constructor(router: Router, private contexts: ChildrenOutletContexts) { }
+  constructor(private contexts: ChildrenOutletContexts) { }
   getRouteAnimationData() {
     return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
   }
