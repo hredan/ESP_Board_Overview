@@ -7,6 +7,6 @@ import { EspCoreOverviewComponent } from './esp-core-overview/esp-core-overview.
 export const routes: Routes = [
     { path: 'info', component: EspCoreOverviewComponent },
     { path: 'esp8266', component: BoardOverviewComponent },
-    { path: '',   redirectTo: '/esp8266', pathMatch: 'full' }, // redirect to `trend`
+    { path: '',   redirectTo: '/info', pathMatch: 'full' }, // redirect to `trend`
     { path: '**', component: PageNotFoundComponent },
 ];
