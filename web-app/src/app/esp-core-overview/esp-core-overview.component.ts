@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import * as coreList_input from '../../../public/core_list.json';
 import { RouterLinkActive, RouterLink } from '@angular/router';
 
