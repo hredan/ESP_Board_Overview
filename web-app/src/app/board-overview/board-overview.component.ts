@@ -3,7 +3,7 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSort, MatSortModule} from '@angular/material/sort';
+import {Sort, MatSortModule} from '@angular/material/sort';
 import { HttpClient} from '@angular/common/http'; 
 
 @Component({
@@ -13,8 +13,10 @@ import { HttpClient} from '@angular/common/http';
   styleUrl: './board-overview.component.css'
 })
 export class BoardOverviewComponent {
-  dataSource: MatTableDataSource<BoardInfo> = new MatTableDataSource<BoardInfo>();
+  dataSource: BoardInfo[] = [];
   displayedColumns: string[] = ['name', 'board', 'led', 'flash_size'];
+  sortedData: MatTableDataSource<BoardInfo> = new MatTableDataSource<BoardInfo>(this.dataSource);
+  filterValue: string = '';
 
   constructor(private httpClient: HttpClient) { }
   ngOnInit() {
@@ -22,8 +24,9 @@ export class BoardOverviewComponent {
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.filterValue = (event.target as HTMLInputElement).value;
+    this.sortedData = new MatTableDataSource<BoardInfo>(this.dataSource);
+    this.sortedData.filter = this.filterValue.trim().toLowerCase();
   }
   getBoardData() {
     const csvFilePath = './esp8266.csv';
@@ -50,7 +53,7 @@ export class BoardOverviewComponent {
               flash_size: ''
             };
             for (let i = 0; i < this.displayedColumns.length; i++) {
-              let header = headers[i].trim();
+              let header = this.displayedColumns[i].trim();
               let value = values[i].trim();
               if (header === 'name') {
                 board_info.name = value;
@@ -65,9 +68,40 @@ export class BoardOverviewComponent {
             boardInfos.push(board_info);
             //console.log('add Board Info:', board_info);
           }
-          this.dataSource = new MatTableDataSource<BoardInfo>(boardInfos);
+          this.dataSource = boardInfos;
+          this.sortedData = new MatTableDataSource<BoardInfo>(this.dataSource);
         });
       });
+  }
+  sortData(sort: Sort) {
+    let data : BoardInfo[] = [];
+    if (this.filterValue != '') {
+      data = this.sortedData.filteredData.slice();
+    }
+    else {
+      data = this.sortedData.data.slice();
+    }
+
+    if (!sort.active || sort.direction === '') {
+      this.sortedData = new MatTableDataSource<BoardInfo>(data);
+      return;
+    }
+
+    this.sortedData = new MatTableDataSource<BoardInfo>(data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'name':
+          return compare(a.name, b.name, isAsc);
+        case 'board':
+          return compare(a.board, b.board, isAsc);
+        case 'led':
+          return compareNum(a.led, b.led, isAsc);
+        case 'flash_size':
+          return compare(a.flash_size, b.flash_size, isAsc);
+        default:
+          return 0;
+      }
+    }));
   }
 }
 
@@ -76,4 +110,14 @@ export interface BoardInfo {
   board: string;
   led: string;
   flash_size: string;
+}
+
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
+function compareNum(a: number | string, b: number | string, isAsc: boolean) {
+  let aNum = parseInt(a as string);
+  let bNum = parseInt(b as string);
+  return (aNum < bNum ? -1 : 1) * (isAsc ? 1 : -1);
 }
