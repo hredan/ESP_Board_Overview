@@ -1,0 +1,7 @@
+/tools
+boards*
+__pycache__
+core_list*.txt
+/*.csv
+/core_list.json
+node_modules

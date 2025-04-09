@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "ngx-csv-parser": "^2.0.0"
+  }
+}

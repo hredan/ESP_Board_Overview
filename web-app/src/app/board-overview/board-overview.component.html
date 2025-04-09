@@ -1,0 +1,27 @@
+<h1>{{coreName().toUpperCase()}} Board Overview</h1>
+<mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="e.g. mini" #input>
+</mat-form-field>
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="sortedData" matSort (matSortChange)="sortData($event)">
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Board Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="board">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> CLI Board Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.board}} </td>
+        </ng-container>
+        <ng-container matColumnDef="led">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Built-in LED GPIO </th>
+            <td mat-cell *matCellDef="let element"> {{element.led}} </td>
+        </ng-container>
+        <ng-container matColumnDef="flash_size">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Flash Size </th>
+            <td mat-cell *matCellDef="let element"> {{element.flash_size}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

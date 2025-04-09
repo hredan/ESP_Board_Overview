@@ -1,0 +1,23 @@
+<h1>ESP Core Overview</h1>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="core_name">
+        <th mat-header-cell *matHeaderCellDef> Core Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.core_name}} </td>
+    </ng-container>
+    <ng-container matColumnDef="core">
+        <th mat-header-cell *matHeaderCellDef> Core </th>
+        <td mat-cell *matCellDef="let element"> {{element.core}} </td>
+    </ng-container>
+    <ng-container matColumnDef="installed_version">
+        <th mat-header-cell *matHeaderCellDef> Parsed Version </th>
+        <td mat-cell *matCellDef="let element"> {{element.installed_version}} </td>
+    </ng-container>
+    <ng-container matColumnDef="link">
+        <th mat-header-cell *matHeaderCellDef> Board Overview </th>
+        <td mat-cell *matCellDef="let element">
+            <a [routerLink] ="[element.link]" routerLinkActive="router-link-active">{{element.core_name}} Bord Overview</a>
+        </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
