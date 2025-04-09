@@ -1,7 +1,7 @@
 <h1>ESP8266 Board Overview</h1>
 <mat-form-field>
     <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="mini" #input>
+    <input matInput (keyup)="applyFilter($event)" placeholder="e.g. mini" #input>
 </mat-form-field>
 <div class="mat-elevation-z8">
     <table mat-table [dataSource]="sortedData" matSort (matSortChange)="sortData($event)">
