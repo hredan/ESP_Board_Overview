@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, input } from '@angular/core';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatInputModule} from '@angular/material/input';
@@ -13,6 +13,7 @@ import { HttpClient} from '@angular/common/http';
   styleUrl: './board-overview.component.css'
 })
 export class BoardOverviewComponent {
+  coreName = input.required<string>();
   dataSource: BoardInfo[] = [];
   displayedColumns: string[] = ['name', 'board', 'led', 'flash_size'];
   sortedData: MatTableDataSource<BoardInfo> = new MatTableDataSource<BoardInfo>(this.dataSource);
@@ -20,7 +21,9 @@ export class BoardOverviewComponent {
 
   constructor(private httpClient: HttpClient) { }
   ngOnInit() {
-    this.getBoardData();
+    console.log('Board Overview Component Initialized');
+    console.log('Core Name:', this.coreName());
+    this.getBoardData(this.coreName());
   }
 
   applyFilter(event: Event) {
@@ -28,8 +31,9 @@ export class BoardOverviewComponent {
     this.sortedData = new MatTableDataSource<BoardInfo>(this.dataSource);
     this.sortedData.filter = this.filterValue.trim().toLowerCase();
   }
-  getBoardData() {
-    const csvFilePath = './esp8266.csv';
+  getBoardData(coreName: string = '') {
+    const csvFilePath = './' + coreName + '.csv';
+    console.log('CSV File Path:', csvFilePath);
     this.httpClient
       .get(csvFilePath, { responseType: 'text' })
       .subscribe((data) => {
