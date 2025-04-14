@@ -1,6 +1,6 @@
-import { Component, input } from '@angular/core';
+import { Component, Injectable, inject, input } from '@angular/core';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {Sort, MatSortModule} from '@angular/material/sort';
@@ -12,14 +12,20 @@ import { HttpClient} from '@angular/common/http';
   templateUrl: './board-overview.component.html',
   styleUrl: './board-overview.component.css'
 })
+
+
+// @Injectable({
+//   providedIn: 'root'
+// })
 export class BoardOverviewComponent {
   coreName = input.required<string>();
   dataSource: BoardInfo[] = [];
   displayedColumns: string[] = ['name', 'board', 'led', 'flash_size'];
   sortedData: MatTableDataSource<BoardInfo> = new MatTableDataSource<BoardInfo>(this.dataSource);
   filterValue: string = '';
+  httpClient: HttpClient;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor() { this.httpClient = inject(HttpClient); }
   ngOnInit() {
     console.log('Board Overview Component Initialized');
     console.log('Core Name:', this.coreName());
