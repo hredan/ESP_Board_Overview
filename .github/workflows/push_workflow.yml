@@ -24,7 +24,7 @@ jobs:
         run: |
           cd web-app
           ng test --no-watch --no-progress --browsers=ChromeHeadlessCI
-  web-app-biuld:
+  web-app-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
