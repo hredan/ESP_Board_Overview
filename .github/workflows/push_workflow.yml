@@ -1,14 +1,14 @@
 name: push_workflow
 on: [push, pull_request]
 jobs:
-  web-app-tes:
+  web-app-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: update npm
         run: |
-          npm install -g npm@latest
+          # npm install -g npm@latest
           npm --version
       - name: install packages
         run: |
