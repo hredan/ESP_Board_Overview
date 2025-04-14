@@ -9,5 +9,6 @@ jobs:
       - name: web-app Unit Tests
         run: |
           cd web-app
+          npm install @angular/cli
           npm install
           ng test --no-watch --no-progress --browsers=ChromeHeadlessCI
