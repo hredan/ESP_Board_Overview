@@ -11,7 +11,9 @@ jobs:
         with:
           node-version: 22
       - name: npm version
-        run: npm --version
+        run: |
+          npm install npm -g
+          npm --version
       - name: install packages
         run: |
           cd web-app
