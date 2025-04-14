@@ -1,7 +1,7 @@
 name: push_workflow
 on: [push, pull_request]
 jobs:
-  build:
+  web-app-tes:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -9,6 +9,9 @@ jobs:
       - name: web-app Unit Tests
         run: |
           cd web-app
-          npm install @angular/cli
+          npm install -g npm@latest
+          npm install -g @angular/cli@latest
+          npm --version
+          ng version
           npm install
           ng test --no-watch --no-progress --browsers=ChromeHeadlessCI
