@@ -15,7 +15,6 @@ jobs:
           npm install npm -g
           npm --version
           npm install @angular/cli -g
-          ng version
       - name: install packages
         run: |
           cd web-app
@@ -25,3 +24,26 @@ jobs:
         run: |
           cd web-app
           ng test --no-watch --no-progress --browsers=ChromeHeadlessCI
+  web-app-biuld:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: npm version
+        run: |
+          npm install npm -g
+          npm --version
+          npm install @angular/cli -g
+      - name: install packages
+        run: |
+          cd web-app
+          npm install
+          ng version
+      - name: run tests
+        run: |
+          cd web-app
+          ng build
