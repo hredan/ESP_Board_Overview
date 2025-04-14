@@ -1,0 +1,13 @@
+name: push_workflow
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: web-app Unit Tests
+        run: |
+          cd web-app
+          npm install
+          ng test --no-watch --no-progress --browsers=ChromeHeadlessCI
