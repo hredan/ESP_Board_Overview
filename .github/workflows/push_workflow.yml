@@ -6,12 +6,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: web-app Unit Tests
+      - name: update npm
+        run: |
+          npm install -g npm@latest
+          npm --version
+      - name: install packages
         run: |
           cd web-app
-          npm install -g npm@latest
-          npm install -g @angular/cli@latest
+          npm install
           npm --version
           ng version
-          npm install
+      - name: run tests
+        run: |
+          cd web-app
           ng test --no-watch --no-progress --browsers=ChromeHeadlessCI
