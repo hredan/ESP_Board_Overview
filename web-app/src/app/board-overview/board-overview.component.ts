@@ -20,6 +20,8 @@ import { HttpClient} from '@angular/common/http';
 export class BoardOverviewComponent {
   coreName = input.required<string>();
   dataSource: BoardInfo[] = [];
+  totalBoardCount: number = 0;
+  filteredBoardCount: number = 0;
   displayedColumns: string[] = ['name', 'board', 'led', 'flash_size'];
   sortedData: MatTableDataSource<BoardInfo> = new MatTableDataSource<BoardInfo>(this.dataSource);
   filterValue: string = '';
@@ -36,6 +38,7 @@ export class BoardOverviewComponent {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.sortedData = new MatTableDataSource<BoardInfo>(this.dataSource);
     this.sortedData.filter = this.filterValue.trim().toLowerCase();
+    this.filteredBoardCount = this.sortedData.filteredData.length;
   }
   getBoardData(coreName: string = '') {
     const csvFilePath = './' + coreName + '.csv';
@@ -79,6 +82,8 @@ export class BoardOverviewComponent {
             //console.log('add Board Info:', board_info);
           }
           this.dataSource = boardInfos;
+          this.totalBoardCount = this.dataSource.length;
+          this.filteredBoardCount = this.dataSource.length;
           this.sortedData = new MatTableDataSource<BoardInfo>(this.dataSource);
         });
       });
