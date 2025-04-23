@@ -1,15 +1,9 @@
 <h1>{{coreName().toUpperCase()}} Board Overview</h1>
-<div class="board-filter">
-    <div class="board-filter-input">
-        <mat-form-field>
-            <mat-label>Filter</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="e.g. mini" #input>
-        </mat-form-field>
-    </div>
-    <div class="board-filter-count">
-        {{filteredBoardCount}}/{{totalBoardCount}}
-    </div>
-</div>
+<mat-form-field hintLabel="filtered:">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="e.g. mini" #input>
+    <mat-hint align="end">{{filteredBoardCount}}/{{totalBoardCount}}</mat-hint>
+</mat-form-field>
 <div class="mat-elevation-z8">
     <table mat-table [dataSource]="sortedData" matSort (matSortChange)="sortData($event)">
         <ng-container matColumnDef="name">

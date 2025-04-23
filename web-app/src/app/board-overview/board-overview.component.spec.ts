@@ -15,9 +15,6 @@ describe('BoardOverviewComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting()
       ],
-    });
-
-    await TestBed.configureTestingModule({
       imports: [BoardOverviewComponent]
     })
     .compileComponents();
@@ -28,14 +25,15 @@ describe('BoardOverviewComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    TestBed.inject(HttpTestingController).verify();
+  });
+
   it('should create', () => {
     const httpTesting = TestBed.inject(HttpTestingController);
     const req = httpTesting.expectOne('./test.csv');
     expect(req.request.method).toEqual('GET');
     req.flush('name,board,led,flash_size\nESP32,ESP32,LED1,4MB\nESP8266,ESP8266,LED2,2MB');
     expect(component).toBeTruthy();
-  });
-  afterEach(() => {
-    TestBed.inject(HttpTestingController).verify();
   });
 });

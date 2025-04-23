@@ -1,8 +1,0 @@
-.board-filter{
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    margin-bottom: 10px;
-    gap: 10px;
-    justify-content : flex-start
-}
