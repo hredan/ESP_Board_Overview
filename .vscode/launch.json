@@ -4,13 +4,26 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-    
         {
             "name": "Debug: ESP_BOARD_OVERVIEW",
             "type": "debugpy",
             "request": "launch",
             "program": "./createTable.py",
             "console": "integratedTerminal"
-        }
+        },
+        {
+            "type": "msedge",
+            "request": "launch",
+            "name": "Launch Edge against localhost",
+            "url": "http://localhost:4200",
+            "webRoot": "${workspaceFolder}/web-app"
+        },
+        {
+            "type": "msedge",
+            "request": "launch",
+            "name": "Launch Edge against localhost test",
+            "url": "http://localhost:9876",
+            "webRoot": "${workspaceFolder}/web-app"
+        },
     ]
 }

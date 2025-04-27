@@ -13,10 +13,6 @@ import { HttpClient} from '@angular/common/http';
   styleUrl: './board-overview.component.css'
 })
 
-
-// @Injectable({
-//   providedIn: 'root'
-// })
 export class BoardOverviewComponent {
   coreName = input.required<string>();
   dataSource: BoardInfo[] = [];
