@@ -20,7 +20,9 @@
 		"vscode": {
 			"extensions": [
 				"eamodio.gitlens",
-				"mhutchie.git-graph"
+				"mhutchie.git-graph",
+				"lucono.karma-test-explorer",
+				"Angular.ng-template"
 			]
 		}
 	}

@@ -1,0 +1,9 @@
+{
+    "karmaTestExplorer.projectWorkspaces": ["/workspaces/ESP_Board_Overview/web-app"],
+    "karmaTestExplorer.karmaConfFilePath": "/workspaces/ESP_Board_Overview/web-app/karma.conf.js",
+    "karmaTestExplorer.projectType": "angular",
+    "karmaTestExplorer.testFiles": [
+        "**/*.spec.ts"
+    ],
+    "karmaTestExplorer.testFramework": "jasmine",
+}
