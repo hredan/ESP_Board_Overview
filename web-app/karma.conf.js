@@ -27,7 +27,7 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, './coverage/web-app'),
       subdir: '.',
       reporters: [
-        { type: 'html' },
+        { type: 'lcovonly' },
         { type: 'text-summary' }
       ]
     },

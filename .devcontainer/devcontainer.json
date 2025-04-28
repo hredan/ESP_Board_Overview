@@ -22,7 +22,8 @@
 				"eamodio.gitlens",
 				"mhutchie.git-graph",
 				"lucono.karma-test-explorer",
-				"Angular.ng-template"
+				"Angular.ng-template",
+				"semasquare.vscode-coverage-gutters"
 			]
 		}
 	}
