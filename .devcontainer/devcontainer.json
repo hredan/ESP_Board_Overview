@@ -23,13 +23,14 @@
 				"mhutchie.git-graph",
 				"lucono.karma-test-explorer",
 				"Angular.ng-template",
-				"semasquare.vscode-coverage-gutters"
+				"semasquare.vscode-coverage-gutters",
+				"actboy168.tasks"
 			]
 		}
-	}
+	},
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "uname -a",
+	"postCreateCommand": "/workspaces/ESP_Board_Overview/Scripts/init_env.sh"
 
 	// Configure tool-specific properties.
 	// "customizations": {},
