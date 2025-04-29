@@ -115,26 +115,64 @@ describe('BoardOverviewComponent', () => {
   }
   );
 
-  it('should sort data by board', () => {
+  it('should sort data by board asc', () => {
     const csvData = 'name,board,led,flash_size\nESP32,ESP32,LED1,4MB\nESP8266,ESP8266,LED2,2MB';
     testReq(csvData);
 
     const sort: Sort = { active: 'board', direction: 'asc' };
     component.sortData(sort);
-    expect(component.dataSource[0].board).toBe('ESP32');
-    expect(component.dataSource[1].board).toBe('ESP8266');
+    const data: BoardInfo[] = component.sortedData.data.slice();
+    expect(data[0].board).toBe('ESP32');
+    expect(data[1].board).toBe('ESP8266');
 
   }
   );
-  it('should sort data by led', () => {
+
+  it('should sort data by board desc', () => {
     const csvData = 'name,board,led,flash_size\nESP32,ESP32,LED1,4MB\nESP8266,ESP8266,LED2,2MB';
+    testReq(csvData);
+
+    const sort: Sort = { active: 'board', direction: 'desc' };
+    component.sortData(sort);
+    const data: BoardInfo[] = component.sortedData.data.slice();
+    expect(data[0].board).toBe('ESP8266');
+    expect(data[1].board).toBe('ESP32');
+  }
+  );
+
+  it('should sort data by led asc', () => {
+    const csvData = 'name,board,led,flash_size\nESP32,ESP32,2,4MB\nESP8266,ESP8266,1,2MB';
     testReq(csvData);
 
     const sort: Sort = { active: 'led', direction: 'asc' };
     component.sortData(sort);
-    expect(component.dataSource[0].led).toBe('LED1');
-    expect(component.dataSource[1].led).toBe('LED2');
+    const data: BoardInfo[] = component.sortedData.data.slice();
+    expect(data[0].led).toBe('1');
+    expect(data[1].led).toBe('2');
+  }
+  );
 
+  it('should sort data by led desc input 2, 1', () => {
+    const csvData = 'name,board,led,flash_size\nESP32,ESP32,2,4MB\nESP8266,ESP8266,1,2MB';
+    testReq(csvData);
+
+    const sort: Sort = { active: 'led', direction: 'desc' };
+    component.sortData(sort);
+    const data: BoardInfo[] = component.sortedData.data.slice();
+    expect(data[0].led).toBe('2');
+    expect(data[1].led).toBe('1');
+  }
+  );
+
+  it('should sort data by led desc input 1, 2', () => {
+    const csvData = 'name,board,led,flash_size\nESP32,ESP32,1,4MB\nESP8266,ESP8266,2,2MB';
+    testReq(csvData);
+
+    const sort: Sort = { active: 'led', direction: 'desc' };
+    component.sortData(sort);
+    const data: BoardInfo[] = component.sortedData.data.slice();
+    expect(data[0].led).toBe('2');
+    expect(data[1].led).toBe('1');
   }
   );
 
