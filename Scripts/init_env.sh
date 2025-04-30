@@ -1,3 +1,6 @@
+#!/bin/bash
+# This script installs google-chrome and the required node packages for the ESP Board Overview web app.
+# It is designed to be run in a Linux environment, specifically Ubuntu 22.04.
 sudo apt update
 sudo apt upgrade -y
 # install google chrome

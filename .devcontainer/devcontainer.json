@@ -24,7 +24,8 @@
 				"lucono.karma-test-explorer",
 				"Angular.ng-template",
 				"semasquare.vscode-coverage-gutters",
-				"actboy168.tasks"
+				"actboy168.tasks",
+				"ms-python.python"
 			]
 		}
 	},

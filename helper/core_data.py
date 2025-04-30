@@ -5,8 +5,9 @@ class CoreData:
     def __init__(self, core_name, core_version):
         self.core_name = core_name
         self.num_of_boards_without_led = 0
-        self.core_path = f"~/.arduino15/packages/{core_name}/hardware/{core_name}/{core_version}"
+        self.core_path = f"/home/vscode/.arduino15/packages/{core_name}/hardware/{core_name}/{core_version}"
         if not os.path.exists(self.core_path):
+            print(f"Warning: could not found {self.core_path}")
             self.core_path = f"/root/.arduino15/packages/{core_name}/hardware/{core_name}/{core_version}"
             if not os.path.exists(self.core_path):
                 raise ValueError(f"Error: could not found {self.core_path}")
