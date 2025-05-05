@@ -18,10 +18,9 @@ export class EspCoreOverviewComponent {
     if (this.coreList.length == 2 && this.coreList[0].core_name == "esp32" && this.coreList[1].core_name == "esp8266") {
       this.coreList[0].link = "/esp32";
       this.coreList[1].link = "/esp8266";
-      console.log("add links");
     }
     else {
-      console.log("no links");
+      console.log("Error: core_list.json is not in the correct format");
     }
   }
 }

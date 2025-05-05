@@ -1,19 +1,21 @@
-import { Component, Injectable, inject, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatInputModule} from '@angular/material/input';
+import { MatCheckboxModule, MatCheckboxChange } from '@angular/material/checkbox';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {Sort, MatSortModule} from '@angular/material/sort';
 import { HttpClient} from '@angular/common/http'; 
 
 @Component({
   selector: 'app-board-overview',
-  imports: [MatTableModule, MatInputModule, MatFormFieldModule, MatSortModule, MatPaginatorModule],
+  imports: [MatTableModule, MatInputModule, MatFormFieldModule, MatSortModule, MatPaginatorModule, MatCheckboxModule],
   templateUrl: './board-overview.component.html',
   styleUrl: './board-overview.component.css'
 })
 
 export class BoardOverviewComponent {
+  checked = false;
   coreName = input.required<string>();
   dataSource: BoardInfo[] = [];
   totalBoardCount: number = 0;
@@ -25,20 +27,36 @@ export class BoardOverviewComponent {
 
   constructor() { this.httpClient = inject(HttpClient); }
   ngOnInit() {
-    console.log('Board Overview Component Initialized');
-    console.log('Core Name:', this.coreName());
     this.getBoardData(this.coreName());
   }
 
-  applyFilter(event: Event) {
-    this.filterValue = (event.target as HTMLInputElement).value;
-    this.sortedData = new MatTableDataSource<BoardInfo>(this.dataSource);
+  applyFilter(event: Event | MatCheckboxChange) {
+    if (event instanceof Event){
+      this.filterValue = (event.target as HTMLInputElement).value;
+    }
+    else if (event instanceof MatCheckboxChange) {
+      this.checked = event.checked;
+    }
+    if (this.checked) {
+      let ignoreNA: BoardInfo[] = [];
+      this.dataSource.forEach((boardInfo) => {
+        if (boardInfo.led !== 'N/A') {
+          ignoreNA.push(boardInfo);
+        }
+      });
+      this.sortedData = new MatTableDataSource<BoardInfo>(ignoreNA);
+    }
+    else {
+      this.sortedData = new MatTableDataSource<BoardInfo>(this.dataSource);
+    }
+    
     this.sortedData.filter = this.filterValue.trim().toLowerCase();
     this.filteredBoardCount = this.sortedData.filteredData.length;
+
+    
   }
   getBoardData(coreName: string = '') {
     const csvFilePath = './' + coreName + '.csv';
-    console.log('CSV File Path:', csvFilePath);
     this.httpClient
       .get(csvFilePath, { responseType: 'text' })
       .subscribe((data) => {
@@ -50,7 +68,6 @@ export class BoardOverviewComponent {
           return;
         }
         let headers = header_string.split(',');
-        console.log('Headers:', headers);
         let boardInfos: BoardInfo[] = [];
         lines.forEach((line) => {
           let values = line.split(',');
@@ -75,7 +92,6 @@ export class BoardOverviewComponent {
               }
             }
             boardInfos.push(board_info);
-            //console.log('add Board Info:', board_info);
           }
           this.dataSource = boardInfos;
           this.totalBoardCount = this.dataSource.length;
@@ -91,11 +107,6 @@ export class BoardOverviewComponent {
     }
     else {
       data = this.sortedData.data.slice();
-    }
-
-    if (!sort.active || sort.direction === '') {
-      this.sortedData = new MatTableDataSource<BoardInfo>(data);
-      return;
     }
 
     this.sortedData = new MatTableDataSource<BoardInfo>(data.sort((a, b) => {
@@ -123,12 +134,24 @@ export interface BoardInfo {
   flash_size: string;
 }
 
-function compare(a: number | string, b: number | string, isAsc: boolean) {
+function compare(a: string, b: string, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
 
-function compareNum(a: number | string, b: number | string, isAsc: boolean) {
+function compareNum(a: string, b: string, isAsc: boolean) {
+  console.log('isAsc: ' + isAsc)
+  if (a === 'N/A')
+  {
+    a = '1000';
+  }
+
+  if (b === 'N/A')
+  {
+    b = '1000';
+  }
+
   let aNum = parseInt(a as string);
   let bNum = parseInt(b as string);
+
   return (aNum < bNum ? -1 : 1) * (isAsc ? 1 : -1);
 }
