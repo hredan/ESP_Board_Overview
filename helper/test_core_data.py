@@ -126,6 +126,13 @@ def test_get_data(setup):
     assert boards["d1_mini"]["variant"] == "d1_mini"
     assert boards["d1_mini"]["flash_size"] == ["4MB"]
 
+def test_sort_flash_size(setup):
+    """Test the __get_data method of CoreData."""
+    core_data = CoreData("esp8266", "2.7.4", str(setup))
+    boards = core_data.boards
+    assert "generic" in boards
+    assert boards["generic"]["flash_size"] == ["512KB", "1MB", "2MB", "4MB"]
+
 def test_get_data_esp32(setup_esp32):
     """Test the __get_data method of CoreData from esp32 test set."""
     core_data = CoreData("esp32", "3.2.0", str(setup_esp32))

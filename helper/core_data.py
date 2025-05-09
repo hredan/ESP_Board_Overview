@@ -84,7 +84,11 @@ class CoreData:
                         if flash_size not in boards[name]["flash_size"]:
                             print(f"Warning: {name} has more than on flash size " +
                                   f"{boards[name]['flash_size']} {flash_size}")
-                            boards[name]["flash_size"].append(flash_size)
+                            if flash_size == "512KB":
+                                # add 512KB to the beginning of the list
+                                boards[name]["flash_size"].insert(0, flash_size)
+                            else:
+                                boards[name]["flash_size"].append(flash_size)
                     else:
                         boards[name]["flash_size"] = [flash_size]
         return boards
