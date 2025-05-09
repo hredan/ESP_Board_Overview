@@ -54,7 +54,11 @@ class CoreData:
                     boards[name]["flash_partitions"] = [flash_partition]
                 else:
                     boards[name]["flash_partitions"].append(flash_partition)
-            return match_partition.group(2)
+            # align flash size unit with esp32 (M-> MB or K-> KB)
+            flash_size = match_partition.group(2)
+            if flash_size[-1] != "B":
+                flash_size = flash_size + "B"
+            return flash_size
         return None
 
     def __get_data(self):

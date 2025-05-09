@@ -124,7 +124,7 @@ def test_get_data(setup):
     assert "d1_mini" in boards
     assert boards["d1_mini"]["name"] == "LOLIN(WEMOS) D1 R2 & mini"
     assert boards["d1_mini"]["variant"] == "d1_mini"
-    assert boards["d1_mini"]["flash_size"] == ["4M"]
+    assert boards["d1_mini"]["flash_size"] == ["4MB"]
 
 def test_get_data_esp32(setup_esp32):
     """Test the __get_data method of CoreData from esp32 test set."""
@@ -155,7 +155,7 @@ def test_print_table(setup_wrong_led_builtin_value, capfd):
     core_data.print_table(ignore_missing_led=False)
     # Check if the output contains the expected values
     out = capfd.readouterr()
-    assert out[0] == "LOLIN(WEMOS) D1 R2 & mini | d1_mini | N/A | ['4M']\n"
+    assert out[0] == "LOLIN(WEMOS) D1 R2 & mini | d1_mini | N/A | ['4MB']\n"
 
 def test_print_table_ignore_na_led(setup_wrong_led_builtin_value, capfd):
     """Test the print_table method of CoreData with ignore_missing_led=True."""
@@ -174,7 +174,7 @@ def test_export_csv(setup_wrong_led_builtin_value, tmpdir):
     # clear the output buffer
     core_data.export_csv(filename=file.strpath, ignore_missing_led=False)
     # Check if the output contains the expected values
-    assert file.read()== "name,board,LED,flash_size\nLOLIN(WEMOS) D1 R2 & mini,d1_mini,N/A,[4M]\n"
+    assert file.read()== "name,board,LED,flash_size\nLOLIN(WEMOS) D1 R2 & mini,d1_mini,N/A,[4MB]\n"
 
 def test_export_csv_ignore_na_led(setup_wrong_led_builtin_value, tmpdir):
     """Test the export_csv method with ignore_missing_led=True."""
