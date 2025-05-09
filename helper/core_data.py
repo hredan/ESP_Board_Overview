@@ -37,8 +37,7 @@ class CoreData:
             name_full=match_board.group(2)
             boards[name]={"name": name_full}
             return name
-        else:
-            return ""
+        return None
 
     def __get_variant(self, line:str, boards: dict, name:str):
         match_variant = re.match(name + r"\.build\.variant=(.+)", line)
