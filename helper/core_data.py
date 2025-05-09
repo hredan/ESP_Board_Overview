@@ -30,38 +30,52 @@ class CoreData:
         self.__set_boars_without_led()
         self.__set_boars_without_flash_size()
 
+    def __get_board_name(self, line:str, boards: dict)-> str:
+        match_board = re.match(r"(.+)\.name=(.+)", line)
+        if match_board:
+            name=match_board.group(1)
+            name_full=match_board.group(2)
+            boards[name]={"name": name_full}
+            return name
+        else:
+            return ""
+
+    def __get_variant(self, line:str, boards: dict, name:str):
+        match_variant = re.match(name + r"\.build\.variant=(.+)", line)
+        if match_variant:
+            boards[name]["variant"] = match_variant.group(1)
+
+    def __special_pattern_esp8266(self, line:str, boards: dict, name:str):
+        pattern = name + r"\.menu\.eesz\.(.+)\.build\.flash_size=(.+)"
+        match_partition = re.match(pattern, line)
+        if match_partition:
+            flash_partition = match_partition.group(1)
+            if flash_partition != "autoflash":
+                if "flash_partitions" not in boards[name]:
+                    boards[name]["flash_partitions"] = [flash_partition]
+                else:
+                    boards[name]["flash_partitions"].append(flash_partition)
+            return match_partition.group(2)
+        return None
+
     def __get_data(self):
         boards = {}
         name=""
         with open(self.boards_txt, 'r', encoding='utf8') as infile:
             for line in infile:
                 flash_size = None
-                match_board = re.match(r"(.+)\.name=(.+)", line)
-                if match_board:
-                    name=match_board.group(1)
-                    name_cli=match_board.group(2)
-                    boards[name]={"name": name_cli}
-                # e.g. d1_mini.build.variant=d1_mini
-                match_variant = re.match(name + r"\.build\.variant=(.+)", line)
-                if match_variant:
-                    boards[name]["variant"] = match_variant.group(1)
+                find_name = self.__get_board_name(line, boards)
+                if find_name:
+                    name = find_name
+                self.__get_variant(line, boards, name)
                 if self.core_name == "esp8266":
-                    pattern = name + r"\.menu\.eesz\.(.+)\.build\.flash_size=(.+)"
-                    match_partition = re.match(pattern, line)
-                    if match_partition:
-                        flash_partition = match_partition.group(1)
-                        if flash_partition == "autoflash":
-                            continue
-                        if "flash_partitions" not in boards[name]:
-                            boards[name]["flash_partitions"] = [flash_partition]
-                        else:
-                            boards[name]["flash_partitions"].append(flash_partition)
-
-                        flash_size = match_partition.group(2)
+                    flash_size = self.__special_pattern_esp8266(line, boards, name)
                 else:
+                    # esp32 pattern
                     match_partition = re.match(name + r"\.build\.flash_size=(.+)", line)
                     if match_partition:
                         flash_size = match_partition.group(1)
+                # store flash size
                 if flash_size:
                     if "flash_size" in boards[name]:
                         if flash_size not in boards[name]["flash_size"]:
