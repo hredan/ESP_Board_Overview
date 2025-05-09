@@ -35,6 +35,33 @@ d1_mini.menu.eesz.4M.build.flash_size=4M
     (variant_path / "pins_arduino.h").write_text(pins_arduino_content)
     return tmp_path
 
+@pytest.fixture(name="setup_esp32")
+def fixture_setup_esp32(tmp_path):
+    """Fixture to set up the test environment for CoreData."""
+    # Create a temporary directory structure for the test
+    # This is a mock of the Arduino core path
+    core_path = tmp_path / "packages" / "esp32" / "hardware" / "esp32" / "3.2.0"
+    core_path.mkdir(parents=True)
+    pytest.core_path = core_path
+    # Create a mock boards.txt file
+    boards_txt_content = """
+d1_mini32.name=WEMOS D1 MINI ESP32
+d1_mini32.build.variant=d1_mini32
+d1_mini32.build.flash_size=4MB
+    """
+    boards_txt_path = core_path / "boards.txt"
+    boards_txt_path.write_text(boards_txt_content)
+
+    # Create a mock variant directory
+    variant_path = core_path / "variants" / "d1_mini32"
+    variant_path.mkdir(parents=True)
+    # Create a mock pins_arduino.h file
+    pins_arduino_content = """
+static const uint8_t LED_BUILTIN = 2;
+    """
+    (variant_path / "pins_arduino.h").write_text(pins_arduino_content)
+    return tmp_path
+
 @pytest.fixture(name="setup_wrong_led_builtin_value")
 def fixture_setup_wrong_led_builtin_value(tmp_path):
     """Fixture to set up the test environment for CoreData with wrong LED_BUILTIN value."""
@@ -98,6 +125,15 @@ def test_get_data(setup):
     assert boards["d1_mini"]["name"] == "LOLIN(WEMOS) D1 R2 & mini"
     assert boards["d1_mini"]["variant"] == "d1_mini"
     assert boards["d1_mini"]["flash_size"] == ["4M"]
+
+def test_get_data_esp32(setup_esp32):
+    """Test the __get_data method of CoreData from esp32 test set."""
+    core_data = CoreData("esp32", "3.2.0", str(setup_esp32))
+    boards = core_data.boards
+    assert "d1_mini32" in boards
+    assert boards["d1_mini32"]["name"] == "WEMOS D1 MINI ESP32"
+    assert boards["d1_mini32"]["variant"] == "d1_mini32"
+    assert boards["d1_mini32"]["flash_size"] == ["4MB"]
 
 def test_find_led_builtin(setup):
     """Test the __find_led_builtin method of CoreData."""
