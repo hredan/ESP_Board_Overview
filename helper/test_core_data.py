@@ -18,6 +18,7 @@ generic.menu.eesz.1M512.build.flash_size=1M
 generic.menu.eesz.2M64.build.flash_size=2M
 generic.menu.eesz.4M2M.build.flash_size=4M
 generic.menu.eesz.512K32.build.flash_size=512K
+generic.menu.eesz.autoflash.build.flash_size=16M
 d1_mini.name=LOLIN(WEMOS) D1 R2 & mini
 d1_mini.build.variant=d1_mini
 d1_mini.menu.eesz.4M.build.flash_size=4M
