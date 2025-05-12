@@ -32,7 +32,7 @@ describe('BoardOverviewComponent', () => {
     TestBed.inject(HttpTestingController).verify();
   });
 
-  function testReq(reqAnswer: string = "") {
+  function testReq(reqAnswer = "") {
     const httpTesting = TestBed.inject(HttpTestingController);
     const req = httpTesting.expectOne('./'+ testCoreName +'.csv');
     if (reqAnswer !== "") {
@@ -80,11 +80,11 @@ describe('BoardOverviewComponent', () => {
   it('should apply filter', () => {
     const csvData = 'name,board,led,flash_size\nESP32,ESP32,LED1,4MB\nESP8266,ESP8266,LED2,2MB';
     testReq(csvData);
-    const mockEvent: Event = <Event><any>{
+    const mockEvent: Event = ({
       target: {
           value: 'ESP32'
       }
-    };
+    } as any) as Event;
     component.applyFilter(mockEvent);
     const data = component.sortedData.filteredData
     expect(data.length).toBe(1);
@@ -95,11 +95,11 @@ describe('BoardOverviewComponent', () => {
   it('should apply filter with empty string', () => {
     const csvData = 'name,board,led,flash_size\nESP32,ESP32,LED1,4MB\nESP8266,ESP8266,LED2,2MB';
     testReq(csvData);
-    const mockEvent: Event = <Event><any>{
+    const mockEvent: Event = ({
       target: {
           value: ''
       }
-    };
+    } as any) as Event;
     component.applyFilter(mockEvent);
     expect(component.sortedData.filteredData.length).toBe(2);
   }
@@ -219,11 +219,11 @@ describe('BoardOverviewComponent', () => {
     const csvData = 'name,board,led,flash_size\nESP32,ESP32,2,4MB\nESP8266,ESP8266,2,2MB\nESP32,ESP32,1,6MB';
     testReq(csvData);
     // Apply filter to show only ESP32
-    const mockEvent: Event = <Event><any>{
+    const mockEvent: Event = ({
       target: {
           value: 'ESP32'
       }
-    };
+    } as any) as Event;
     component.applyFilter(mockEvent);
 
     const sort: Sort = { active: 'led', direction: 'asc' };

@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatInputModule} from '@angular/material/input';
@@ -14,15 +14,15 @@ import { HttpClient} from '@angular/common/http';
   styleUrl: './board-overview.component.css'
 })
 
-export class BoardOverviewComponent {
+export class BoardOverviewComponent implements OnInit {
   checked = false;
   coreName = input.required<string>();
   dataSource: BoardInfo[] = [];
-  totalBoardCount: number = 0;
-  filteredBoardCount: number = 0;
+  totalBoardCount = 0;
+  filteredBoardCount = 0;
   displayedColumns: string[] = ['name', 'board', 'led', 'flash_size'];
   sortedData: MatTableDataSource<BoardInfo> = new MatTableDataSource<BoardInfo>(this.dataSource);
-  filterValue: string = '';
+  filterValue = '';
   httpClient: HttpClient;
 
   constructor() { this.httpClient = inject(HttpClient); }
@@ -32,7 +32,7 @@ export class BoardOverviewComponent {
 
   updateTable() {
     if (this.checked) {
-      let ignoreNA: BoardInfo[] = [];
+      const ignoreNA: BoardInfo[] = [];
       this.dataSource.forEach((boardInfo) => {
         if (boardInfo.led !== 'N/A') {
           ignoreNA.push(boardInfo);
@@ -57,32 +57,32 @@ export class BoardOverviewComponent {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.updateTable();
   }
-  getBoardData(coreName: string = '') {
+  getBoardData(coreName = '') {
     const csvFilePath = './' + coreName + '.csv';
     this.httpClient
       .get(csvFilePath, { responseType: 'text' })
       .subscribe((data) => {
-        let csvData: string = data;
-        let lines = csvData.split('\n');
-        let header_string = lines.shift();
+        const csvData: string = data;
+        const lines = csvData.split('\n');
+        const header_string = lines.shift();
         if (header_string === undefined) {
           console.error('Header string is undefined');
           return;
         }
-        let headers = header_string.split(',');
-        let boardInfos: BoardInfo[] = [];
+        const headers = header_string.split(',');
+        const boardInfos: BoardInfo[] = [];
         lines.forEach((line) => {
-          let values = line.split(',');
+          const values = line.split(',');
           if (values.length == this.displayedColumns.length) {
-            let board_info: BoardInfo= {
+            const board_info: BoardInfo= {
               name: '',
               board: '',
               led: '',
               flash_size: ''
             };
             for (let i = 0; i < this.displayedColumns.length; i++) {
-              let header = this.displayedColumns[i].trim();
-              let value = values[i].trim();
+              const header = this.displayedColumns[i].trim();
+              const value = values[i].trim();
               if (header === 'name') {
                 board_info.name = value;
               } else if (header === 'board') {
@@ -152,8 +152,8 @@ function compareNum(a: string, b: string, isAsc: boolean) {
     b = '1000';
   }
 
-  let aNum = parseInt(a as string);
-  let bNum = parseInt(b as string);
+  const aNum = parseInt(a as string);
+  const bNum = parseInt(b as string);
 
   return (aNum < bNum ? -1 : 1) * (isAsc ? 1 : -1);
 }

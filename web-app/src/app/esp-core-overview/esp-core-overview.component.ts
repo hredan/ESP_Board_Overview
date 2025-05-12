@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import * as coreList_input from '../../../public/core_list.json';
 import { RouterLinkActive, RouterLink } from '@angular/router';
@@ -9,7 +9,7 @@ import { RouterLinkActive, RouterLink } from '@angular/router';
   templateUrl: './esp-core-overview.component.html',
   styleUrl: './esp-core-overview.component.css'
 })
-export class EspCoreOverviewComponent {
+export class EspCoreOverviewComponent implements OnInit {
   coreList: Core[] = (coreList_input as any).default;
   displayedColumns: string[] = ['core_name', 'core', 'installed_version', 'link'];
   dataSource = this.coreList;
