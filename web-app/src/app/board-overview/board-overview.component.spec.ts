@@ -4,6 +4,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { BoardOverviewComponent, BoardInfo } from './board-overview.component';
 import { provideHttpClient } from '@angular/common/http';
 import { Sort } from '@angular/material/sort';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 describe('BoardOverviewComponent', () => {
   let component: BoardOverviewComponent;
@@ -85,8 +86,9 @@ describe('BoardOverviewComponent', () => {
       }
     };
     component.applyFilter(mockEvent);
-    expect(component.sortedData.filteredData.length).toBe(1);
-    expect(component.sortedData.filteredData[0].name).toBe('ESP32');
+    const data = component.sortedData.filteredData
+    expect(data.length).toBe(1);
+    expect(data[0].name).toBe('ESP32');
   }
   );
 
@@ -100,6 +102,17 @@ describe('BoardOverviewComponent', () => {
     };
     component.applyFilter(mockEvent);
     expect(component.sortedData.filteredData.length).toBe(2);
+  }
+  );
+
+  it('should apply filter ignore led N/A', () => {
+    const csvData = 'name,board,led,flash_size\nESP32,ESP32,1,4MB\nESP8266,ESP8266,N/A,2MB';
+    testReq(csvData);
+    const mockEvent: MatCheckboxChange = new MatCheckboxChange ();
+    mockEvent.checked = true;
+
+    component.applyIgnoreNA(mockEvent);
+    expect(component.sortedData.filteredData.length).toBe(1);
   }
   );
 
@@ -149,6 +162,32 @@ describe('BoardOverviewComponent', () => {
     const data: BoardInfo[] = component.sortedData.data.slice();
     expect(data[0].led).toBe('1');
     expect(data[1].led).toBe('2');
+  }
+  );
+
+  it('should sort N/A led values at end of list, if direction is asc', () => {
+    const csvData = 'name,board,led,flash_size\nESP32,ESP32,2,4MB\nESP8266,ESP8266,1,2MB\nESP8266,ESP8266,N/A,2MB';
+    testReq(csvData);
+
+    const sort: Sort = { active: 'led', direction: 'asc' };
+    component.sortData(sort);
+    const data: BoardInfo[] = component.sortedData.data.slice();
+    expect(data[0].led).toBe('1');
+    expect(data[1].led).toBe('2');
+    expect(data[2].led).toBe('N/A');
+  }
+  );
+
+  it('should sort N/A led values at beginning of list, if direction is desc', () => {
+    const csvData = 'name,board,led,flash_size\nESP32,ESP32,N/A,4MB\nESP8266,ESP8266,1,2MB\nESP8266,ESP8266,N/A,2MB';
+    testReq(csvData);
+
+    const sort: Sort = { active: 'led', direction: 'desc' };
+    component.sortData(sort);
+    const data: BoardInfo[] = component.sortedData.data.slice();
+    expect(data[0].led).toBe('N/A');
+    expect(data[1].led).toBe('N/A');
+    expect(data[2].led).toBe('1');
   }
   );
 

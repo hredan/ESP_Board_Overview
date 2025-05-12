@@ -30,13 +30,7 @@ export class BoardOverviewComponent {
     this.getBoardData(this.coreName());
   }
 
-  applyFilter(event: Event | MatCheckboxChange) {
-    if (event instanceof Event){
-      this.filterValue = (event.target as HTMLInputElement).value;
-    }
-    else if (event instanceof MatCheckboxChange) {
-      this.checked = event.checked;
-    }
+  updateTable() {
     if (this.checked) {
       let ignoreNA: BoardInfo[] = [];
       this.dataSource.forEach((boardInfo) => {
@@ -52,8 +46,16 @@ export class BoardOverviewComponent {
     
     this.sortedData.filter = this.filterValue.trim().toLowerCase();
     this.filteredBoardCount = this.sortedData.filteredData.length;
+  }
 
-    
+  applyIgnoreNA(event: MatCheckboxChange) {
+    this.checked = event.checked;
+    this.updateTable();
+  }
+
+  applyFilter(event: Event) {
+    this.filterValue = (event.target as HTMLInputElement).value;
+    this.updateTable();
   }
   getBoardData(coreName: string = '') {
     const csvFilePath = './' + coreName + '.csv';
