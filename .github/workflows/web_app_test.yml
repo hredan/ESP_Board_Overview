@@ -1,6 +1,6 @@
 on:
   workflow_call:
-jops:
+jobs:
   web-app-test:
     runs-on: ubuntu-latest
     steps:
