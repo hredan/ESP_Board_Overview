@@ -69,7 +69,6 @@ export class BoardOverviewComponent implements OnInit {
           console.error('Header string is undefined');
           return;
         }
-        const headers = header_string.split(',');
         const boardInfos: BoardInfo[] = [];
         lines.forEach((line) => {
           const values = line.split(',');
