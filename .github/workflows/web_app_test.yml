@@ -47,3 +47,26 @@ jobs:
         run: |
           cd web-app
           ng build
+  ng-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: npm version
+        run: |
+          npm install npm -g
+          npm --version
+          npm install @angular/cli -g
+      - name: install packages
+        run: |
+          cd web-app
+          npm install
+          ng version
+      - name: run tests
+        run: |
+          cd web-app
+          ng lint
