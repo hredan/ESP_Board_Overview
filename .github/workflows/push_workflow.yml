@@ -4,34 +4,4 @@ jobs:
   web-app-test:
     uses: ./.github/workflows/web_app_test.yml
   pytest:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.12
-      - name: Install test dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements_test.txt
-      - name: Run tests
-        run: |
-          pytest --cov=helper --cov-fail-under=80 ./helper
-  pylint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.12
-      - name: Install test dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements_test.txt
-      - name: Run tests
-        run: |
-          pylint -v ./create_table.py ./helper
+    uses: ./.github/workflows/python_test.yml
