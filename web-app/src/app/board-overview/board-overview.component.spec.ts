@@ -80,11 +80,12 @@ describe('BoardOverviewComponent', () => {
   it('should apply filter', () => {
     const csvData = 'name,board,led,flash_size\nESP32,ESP32,LED1,4MB\nESP8266,ESP8266,LED2,2MB';
     testReq(csvData);
-    const mockEvent: Event = ({
+    const mockEvent: Event = 
+    ({
       target: {
           value: 'ESP32'
       }
-    } as any) as Event;
+    } as unknown) as Event;
     component.applyFilter(mockEvent);
     const data = component.sortedData.filteredData
     expect(data.length).toBe(1);
@@ -99,7 +100,7 @@ describe('BoardOverviewComponent', () => {
       target: {
           value: ''
       }
-    } as any) as Event;
+    } as unknown) as Event;
     component.applyFilter(mockEvent);
     expect(component.sortedData.filteredData.length).toBe(2);
   }
@@ -223,7 +224,7 @@ describe('BoardOverviewComponent', () => {
       target: {
           value: 'ESP32'
       }
-    } as any) as Event;
+    } as unknown) as Event;
     component.applyFilter(mockEvent);
 
     const sort: Sort = { active: 'led', direction: 'asc' };
