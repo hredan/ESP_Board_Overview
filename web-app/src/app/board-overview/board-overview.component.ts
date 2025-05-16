@@ -157,9 +157,9 @@ function compareLed(a: string, b: string, isAsc: boolean) {
   return (aNum < bNum ? -1 : 1) * (isAsc ? 1 : -1);
 }
 
-function get_flash_size(a: string, isAsc: boolean) {
+function get_flash_size_value(a: string, isAsc: boolean) {
   let flash_size = a.slice(1, -1);
-  let list = flash_size.split(';');
+  const list = flash_size.split(';');
   if (list.length > 1) {
     if (isAsc){
       flash_size = list[0];
@@ -173,12 +173,16 @@ function get_flash_size(a: string, isAsc: boolean) {
   }
   else
   {
-    return parseInt(flash_size.slice(0, -2));
+    let num = parseInt(flash_size.slice(0, -2));
+    if (Number.isNaN(num)) {
+      num = 0;
+    }
+    return num;
   }
 }
 
 function compareFlashSize(a: string, b: string, isAsc: boolean) {
-  let aNum = get_flash_size(a, isAsc);
-  let bNum = get_flash_size(b, isAsc);
+  const aNum = get_flash_size_value(a, isAsc);
+  const bNum = get_flash_size_value(b, isAsc);
   return (aNum < bNum ? -1 : 1) * (isAsc ? 1 : -1);
 }

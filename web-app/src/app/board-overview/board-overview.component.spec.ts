@@ -237,17 +237,18 @@ describe('BoardOverviewComponent', () => {
   );
 
   it('should sort data by flash_size', () => {
-    const csvData = 'name,board,led,flash_size\nESP32,ESP32,LED1,[4MB]\nESP8266,ESP8266,LED2,[2MB]' +
+    const csvData = 'name,board,led,flash_size\nESP32,ESP32,LED1,[4MB]\nESP8266,ESP8266,LED2,[2MB]\nESP8266,ESP8266,LED2,[N/A]' +
     '\nESP8266,ESP8266,LED2,[512KB;1MB;16MB]';
     testReq(csvData);
 
     const sort: Sort = { active: 'flash_size', direction: 'asc' };
     component.sortData(sort);
     const data: BoardInfo[] = component.sortedData.data.slice();
-    expect(data.length).toBe(3);
-    expect(data[0].flash_size).toBe('[512KB;1MB;16MB]');
-    expect(data[1].flash_size).toBe('[2MB]');
-    expect(data[2].flash_size).toBe('[4MB]');
+    expect(data.length).toBe(4);
+    expect(data[0].flash_size).toBe('[N/A]');
+    expect(data[1].flash_size).toBe('[512KB;1MB;16MB]');
+    expect(data[2].flash_size).toBe('[2MB]');
+    expect(data[3].flash_size).toBe('[4MB]');
   }
   );
 
