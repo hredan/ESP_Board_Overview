@@ -1,0 +1,22 @@
+{
+    "karmaTestExplorer.projectWorkspaces": ["/workspaces/ESP_Board_Overview/web-app"],
+    "karmaTestExplorer.karmaConfFilePath": "/workspaces/ESP_Board_Overview/web-app/karma.conf.js",
+    "karmaTestExplorer.projectType": "angular",
+    "karmaTestExplorer.testFiles": [
+        "**/*.spec.ts"
+    ],
+    "karmaTestExplorer.testFramework": "jasmine",
+    "python.testing.pytestArgs": [
+        "--ignore=./createTable.py",
+        "./helper"
+    ],
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./helper",
+        "-p",
+        "test_*.py"
+    ],
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+}

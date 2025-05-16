@@ -8,5 +8,5 @@ import { BoardOverviewComponent } from '../board-overview/board-overview.compone
   styleUrl: './esp8266-board-overview.component.css'
 })
 export class Esp8266BoardOverviewComponent {
-  coreName = 'esp8266';
+
 }

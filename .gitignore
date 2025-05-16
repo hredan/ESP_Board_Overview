@@ -5,3 +5,5 @@ core_list*.txt
 /*.csv
 /core_list.json
 node_modules
+.venv
+.coverage
