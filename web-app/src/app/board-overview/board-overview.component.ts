@@ -118,9 +118,9 @@ export class BoardOverviewComponent implements OnInit {
         case 'board':
           return compare(a.board, b.board, isAsc);
         case 'led':
-          return compareNum(a.led, b.led, isAsc);
+          return compareLed(a.led, b.led, isAsc);
         case 'flash_size':
-          return compare(a.flash_size, b.flash_size, isAsc);
+          return compareFlashSize(a.flash_size, b.flash_size, isAsc);
         default:
           return 0;
       }
@@ -139,7 +139,7 @@ function compare(a: string, b: string, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
 
-function compareNum(a: string, b: string, isAsc: boolean) {
+function compareLed(a: string, b: string, isAsc: boolean) {
   console.log('isAsc: ' + isAsc)
   if (a === 'N/A')
   {
@@ -154,5 +154,31 @@ function compareNum(a: string, b: string, isAsc: boolean) {
   const aNum = parseInt(a as string);
   const bNum = parseInt(b as string);
 
+  return (aNum < bNum ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
+function get_flash_size(a: string, isAsc: boolean) {
+  let flash_size = a.slice(1, -1);
+  let list = flash_size.split(';');
+  if (list.length > 1) {
+    if (isAsc){
+      flash_size = list[0];
+    }
+    else{
+      flash_size = list[list.length - 1];
+    }
+  }
+  if (flash_size === '512KB') {
+    return 0;
+  }
+  else
+  {
+    return parseInt(flash_size.slice(0, -2));
+  }
+}
+
+function compareFlashSize(a: string, b: string, isAsc: boolean) {
+  let aNum = get_flash_size(a, isAsc);
+  let bNum = get_flash_size(b, isAsc);
   return (aNum < bNum ? -1 : 1) * (isAsc ? 1 : -1);
 }
