@@ -28,7 +28,7 @@ class CoreData:
         self.boards = self.__get_data()
         self.__find_led_builtin()
         self.__set_boars_without_led()
-        self.__set_boars_without_flash_size()
+        # self.__set_boars_without_flash_size()
 
     def __get_board_name(self, line:str, boards: dict)-> str:
         match_board = re.match(r"(.+)\.name=(.+)", line)
@@ -178,5 +178,9 @@ class CoreData:
                     continue
                 name= self.boards[board_name]['name']
                 led=self.boards[board_name]['LED_BUILTIN']
-                flash_size=self.boards[board_name]['flash_size']
-                file.write(f"{name},{board_name},{led},[{';'.join(flash_size)}]\n")
+                if 'flash_size' in self.boards[board_name]:
+                    flash_size_value=self.boards[board_name]['flash_size']
+                    flash_size=f"[{';'.join(flash_size_value)}]"
+                else:
+                    flash_size='[N/A]'
+                file.write(f"{name},{board_name},{led},{flash_size}\n")
