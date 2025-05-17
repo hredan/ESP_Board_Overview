@@ -63,6 +63,23 @@ static const uint8_t LED_BUILTIN = 2;
     (variant_path / "pins_arduino.h").write_text(pins_arduino_content)
     return tmp_path
 
+@pytest.fixture(name="setup_esp32_without_variant_flash_size")
+def fixture_setup_esp32_without_variant_flash_size(tmp_path):
+    """Fixture to set up the test environment for CoreData."""
+    # Create a temporary directory structure for the test
+    # This is a mock of the Arduino core path
+    core_path = tmp_path / "packages" / "esp32" / "hardware" / "esp32" / "3.2.0"
+    core_path.mkdir(parents=True)
+    pytest.core_path = core_path
+    # Create a mock boards.txt file
+    boards_txt_content = """
+d1_mini32.name=WEMOS D1 MINI ESP32
+    """
+    boards_txt_path = core_path / "boards.txt"
+    boards_txt_path.write_text(boards_txt_content)
+
+    return tmp_path
+
 @pytest.fixture(name="setup_wrong_led_builtin_value")
 def fixture_setup_wrong_led_builtin_value(tmp_path):
     """Fixture to set up the test environment for CoreData with wrong LED_BUILTIN value."""
@@ -192,3 +209,12 @@ def test_export_csv_ignore_na_led(setup_wrong_led_builtin_value, tmpdir):
     core_data.export_csv(filename=file.strpath, ignore_missing_led=True)
     # Check if the output contains the expected values
     assert file.read()== "name,board,LED,flash_size\n"
+
+def test_export_csv_flash_size_na(setup_esp32_without_variant_flash_size, tmpdir):
+    """Test the export_csv method with ignore_missing_led=True."""
+    file = tmpdir / "esp32.csv"
+    core_data = CoreData("esp32", "3.2.0", str(setup_esp32_without_variant_flash_size))
+    # clear the output buffer
+    core_data.export_csv(filename=file.strpath, ignore_missing_led=False)
+    # Check if the output contains the expected values
+    assert file.read()== "name,board,LED,flash_size\nWEMOS D1 MINI ESP32,d1_mini32,N/A,[N/A]\n"

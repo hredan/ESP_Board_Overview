@@ -28,7 +28,6 @@ class CoreData:
         self.boards = self.__get_data()
         self.__find_led_builtin()
         self.__set_boars_without_led()
-        self.__set_boars_without_flash_size()
 
     def __get_board_name(self, line:str, boards: dict)-> str:
         match_board = re.match(r"(.+)\.name=(.+)", line)
@@ -111,14 +110,6 @@ class CoreData:
                             if "LED_BUILTIN" in line:
                                 print(f"{line_num} {line}")
 
-    def __set_boars_without_flash_size(self):
-        boards_names = self.boards.keys()
-        for board_name in boards_names:
-            board_entries = self.boards[board_name].keys()
-            if not 'flash_size' in board_entries:
-                print(f"Error: could not find flash_size Entry for {board_name}")
-                self.boards[board_name]["flash_size"]="N/A"
-
     def __find_led_builtin(self):
         boards_names = self.boards.keys()
         for board_name in boards_names:
@@ -178,5 +169,9 @@ class CoreData:
                     continue
                 name= self.boards[board_name]['name']
                 led=self.boards[board_name]['LED_BUILTIN']
-                flash_size=self.boards[board_name]['flash_size']
-                file.write(f"{name},{board_name},{led},[{';'.join(flash_size)}]\n")
+                if 'flash_size' in self.boards[board_name]:
+                    flash_size_value=self.boards[board_name]['flash_size']
+                    flash_size=f"[{';'.join(flash_size_value)}]"
+                else:
+                    flash_size='[N/A]'
+                file.write(f"{name},{board_name},{led},{flash_size}\n")
