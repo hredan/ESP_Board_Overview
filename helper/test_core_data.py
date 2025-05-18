@@ -199,7 +199,9 @@ def test_export_csv(setup_wrong_led_builtin_value, tmpdir):
     # clear the output buffer
     core_data.export_csv(filename=file.strpath, ignore_missing_led=False)
     # Check if the output contains the expected values
-    assert file.read()== "name,board,LED,flash_size\nLOLIN(WEMOS) D1 R2 & mini,d1_mini,N/A,[4MB]\n"
+    expected_header = "name,board,variant,LED,flash_size\n"
+    expected_row = "LOLIN(WEMOS) D1 R2 & mini,d1_mini,d1_mini,N/A,[4MB]\n"
+    assert file.read()== expected_header + expected_row
 
 def test_export_csv_ignore_na_led(setup_wrong_led_builtin_value, tmpdir):
     """Test the export_csv method with ignore_missing_led=True."""
@@ -208,7 +210,7 @@ def test_export_csv_ignore_na_led(setup_wrong_led_builtin_value, tmpdir):
     # clear the output buffer
     core_data.export_csv(filename=file.strpath, ignore_missing_led=True)
     # Check if the output contains the expected values
-    assert file.read()== "name,board,LED,flash_size\n"
+    assert file.read()== "name,board,variant,LED,flash_size\n"
 
 def test_export_csv_flash_size_na(setup_esp32_without_variant_flash_size, tmpdir):
     """Test the export_csv method with ignore_missing_led=True."""
@@ -217,4 +219,6 @@ def test_export_csv_flash_size_na(setup_esp32_without_variant_flash_size, tmpdir
     # clear the output buffer
     core_data.export_csv(filename=file.strpath, ignore_missing_led=False)
     # Check if the output contains the expected values
-    assert file.read()== "name,board,LED,flash_size\nWEMOS D1 MINI ESP32,d1_mini32,N/A,[N/A]\n"
+    expected_header = "name,board,variant,LED,flash_size\n"
+    expected_row = "WEMOS D1 MINI ESP32,d1_mini32,N/A,N/A,[N/A]\n"
+    assert file.read()== expected_header + expected_row

@@ -163,7 +163,7 @@ class CoreData:
         """
         names = sorted(self.boards.keys())
         with open(filename, "w", encoding='utf8') as file:
-            file.write("name,board,LED,flash_size\n")
+            file.write("name,board,variant,LED,flash_size\n")
             for board_name in names:
                 if ignore_missing_led and self.boards[board_name]["LED_BUILTIN"] == "N/A":
                     continue
@@ -174,4 +174,8 @@ class CoreData:
                     flash_size=f"[{';'.join(flash_size_value)}]"
                 else:
                     flash_size='[N/A]'
-                file.write(f"{name},{board_name},{led},{flash_size}\n")
+                if 'variant' in self.boards[board_name]:
+                    variant=self.boards[board_name]['variant']
+                else:
+                    variant='N/A'
+                file.write(f"{name},{board_name},{variant},{led},{flash_size}\n")
