@@ -18,6 +18,18 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> CLI Board Name </th>
             <td mat-cell *matCellDef="let element"> {{element.board}} </td>
         </ng-container>
+         <ng-container matColumnDef="variant">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Variant/Link pins_arduino.h </th>
+            
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="element.variant !== 'N/A'; else noLink">
+                        <a target="_blank" rel="noopener noreferrer" [href]="element.linkPins">{{element.variant}}</a>
+                    </div>
+                    <ng-template #noLink>
+                        {{element.variant}}
+                    </ng-template>
+                </td>
+        </ng-container>
         <ng-container matColumnDef="led">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Built-in LED GPIO </th>
             <td mat-cell *matCellDef="let element"> {{element.led}} </td>

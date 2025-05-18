@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { EspCoreOverviewComponent } from './esp-core-overview.component';
 
 describe('EspCoreOverviewComponent', () => {

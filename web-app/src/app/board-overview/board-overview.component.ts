@@ -5,11 +5,13 @@ import {MatInputModule} from '@angular/material/input';
 import { MatCheckboxModule, MatCheckboxChange } from '@angular/material/checkbox';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {Sort, MatSortModule} from '@angular/material/sort';
-import { HttpClient} from '@angular/common/http'; 
+import { HttpClient} from '@angular/common/http';
+import coreList_input from '../../../public/core_list.json';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-board-overview',
-  imports: [MatTableModule, MatInputModule, MatFormFieldModule, MatSortModule, MatPaginatorModule, MatCheckboxModule],
+  imports: [MatTableModule, MatInputModule, MatFormFieldModule, MatSortModule, MatPaginatorModule, MatCheckboxModule, NgIf],
   templateUrl: './board-overview.component.html',
   styleUrl: './board-overview.component.css'
 })
@@ -20,13 +22,20 @@ export class BoardOverviewComponent implements OnInit {
   dataSource: BoardInfo[] = [];
   totalBoardCount = 0;
   filteredBoardCount = 0;
-  displayedColumns: string[] = ['name', 'board', 'led', 'flash_size'];
+  displayedColumns: string[] = ['name', 'board','variant', 'led', 'flash_size'];
   sortedData: MatTableDataSource<BoardInfo> = new MatTableDataSource<BoardInfo>(this.dataSource);
   filterValue = '';
   httpClient: HttpClient;
+  coreList: Core[] = (coreList_input as Core[]);
+  coreVersion = '';
 
   constructor() { this.httpClient = inject(HttpClient); }
   ngOnInit() {
+    this.coreList.forEach((core) => {
+      if (core.core_name === this.coreName()) {
+        this.coreVersion = core.installed_version;
+      }
+    });
     this.getBoardData(this.coreName());
   }
 
@@ -64,11 +73,8 @@ export class BoardOverviewComponent implements OnInit {
       .subscribe((data) => {
         const csvData: string = data;
         const lines = csvData.split('\n');
-        const header_string = lines.shift();
-        if (header_string === undefined) {
-          console.error('Header string is undefined');
-          return;
-        }
+        // remove header
+        lines.shift();
         const boardInfos: BoardInfo[] = [];
         lines.forEach((line) => {
           const values = line.split(',');
@@ -76,6 +82,8 @@ export class BoardOverviewComponent implements OnInit {
             const board_info: BoardInfo= {
               name: '',
               board: '',
+              variant: '',
+              linkPins: '',
               led: '',
               flash_size: ''
             };
@@ -86,10 +94,20 @@ export class BoardOverviewComponent implements OnInit {
                 board_info.name = value;
               } else if (header === 'board') {
                 board_info.board = value;
+              } else if (header === 'variant') {
+                board_info.variant = value;
               } else if (header === 'led') {
                 board_info.led = value;
               } else if (header === 'flash_size') {
                 board_info.flash_size = value;
+              }
+            }
+            if (board_info.variant !== 'N/A') {
+              if (this.coreName() === 'esp32') {
+                board_info.linkPins = "https://github.com/espressif/arduino-esp32/blob/" + this.coreVersion + "/variants/" + board_info.variant + "/pins_arduino.h"
+              }
+              else if (this.coreName() === 'esp8266') {
+                board_info.linkPins = "https://github.com/esp8266/Arduino/blob/" + this.coreVersion + "/variants/" + board_info.variant + "/pins_arduino.h";
               }
             }
             boardInfos.push(board_info);
@@ -131,8 +149,17 @@ export class BoardOverviewComponent implements OnInit {
 export interface BoardInfo {
   name: string;
   board: string;
+  variant: string;
+  linkPins: string;
   led: string;
   flash_size: string;
+}
+
+export interface Core {
+  core: string;
+  installed_version: string;
+  latest_version: string;
+  core_name: string;
 }
 
 function compare(a: string, b: string, isAsc: boolean) {
@@ -140,7 +167,6 @@ function compare(a: string, b: string, isAsc: boolean) {
 }
 
 function compareLed(a: string, b: string, isAsc: boolean) {
-  console.log('isAsc: ' + isAsc)
   if (a === 'N/A')
   {
     a = '1000';
