@@ -14,6 +14,7 @@ def fixture_setup(tmp_path):
     boards_txt_content = """
 generic.name=Generic ESP8266 Module
 generic.build.variant=generic
+generic.build.mcu=esp8266
 generic.menu.eesz.1M512.build.flash_size=1M
 generic.menu.eesz.2M64.build.flash_size=2M
 generic.menu.eesz.4M2M.build.flash_size=4M
@@ -21,6 +22,7 @@ generic.menu.eesz.512K32.build.flash_size=512K
 generic.menu.eesz.autoflash.build.flash_size=16M
 d1_mini.name=LOLIN(WEMOS) D1 R2 & mini
 d1_mini.build.variant=d1_mini
+d1_mini.build.mcu=esp8266
 d1_mini.menu.eesz.4M.build.flash_size=4M
     """
     boards_txt_path = core_path / "boards.txt"
@@ -48,6 +50,7 @@ def fixture_setup_esp32(tmp_path):
     boards_txt_content = """
 d1_mini32.name=WEMOS D1 MINI ESP32
 d1_mini32.build.variant=d1_mini32
+d1_mini32.build.mcu=esp32
 d1_mini32.build.flash_size=4MB
     """
     boards_txt_path = core_path / "boards.txt"
@@ -92,6 +95,7 @@ def fixture_setup_wrong_led_builtin_value(tmp_path):
     boards_txt_content = """
 d1_mini.name=LOLIN(WEMOS) D1 R2 & mini
 d1_mini.build.variant=d1_mini
+d1_mini.build.mcu=esp8266
 d1_mini.menu.eesz.4M.build.flash_size=4M
     """
     boards_txt_path = core_path / "boards.txt"
@@ -199,8 +203,8 @@ def test_export_csv(setup_wrong_led_builtin_value, tmpdir):
     # clear the output buffer
     core_data.export_csv(filename=file.strpath, ignore_missing_led=False)
     # Check if the output contains the expected values
-    expected_header = "name,board,variant,LED,flash_size\n"
-    expected_row = "LOLIN(WEMOS) D1 R2 & mini,d1_mini,d1_mini,N/A,[4MB]\n"
+    expected_header = "name,board,variant,LED,mcu,flash_size\n"
+    expected_row = "LOLIN(WEMOS) D1 R2 & mini,d1_mini,d1_mini,N/A,esp8266,[4MB]\n"
     assert file.read()== expected_header + expected_row
 
 def test_export_csv_ignore_na_led(setup_wrong_led_builtin_value, tmpdir):
@@ -210,7 +214,7 @@ def test_export_csv_ignore_na_led(setup_wrong_led_builtin_value, tmpdir):
     # clear the output buffer
     core_data.export_csv(filename=file.strpath, ignore_missing_led=True)
     # Check if the output contains the expected values
-    assert file.read()== "name,board,variant,LED,flash_size\n"
+    assert file.read()== "name,board,variant,LED,mcu,flash_size\n"
 
 def test_export_csv_flash_size_na(setup_esp32_without_variant_flash_size, tmpdir):
     """Test the export_csv method with ignore_missing_led=True."""
@@ -219,6 +223,6 @@ def test_export_csv_flash_size_na(setup_esp32_without_variant_flash_size, tmpdir
     # clear the output buffer
     core_data.export_csv(filename=file.strpath, ignore_missing_led=False)
     # Check if the output contains the expected values
-    expected_header = "name,board,variant,LED,flash_size\n"
-    expected_row = "WEMOS D1 MINI ESP32,d1_mini32,N/A,N/A,[N/A]\n"
+    expected_header = "name,board,variant,LED,mcu,flash_size\n"
+    expected_row = "WEMOS D1 MINI ESP32,d1_mini32,N/A,N/A,N/A,[N/A]\n"
     assert file.read()== expected_header + expected_row
