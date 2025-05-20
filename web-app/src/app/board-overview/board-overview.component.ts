@@ -22,7 +22,7 @@ export class BoardOverviewComponent implements OnInit {
   dataSource: BoardInfo[] = [];
   totalBoardCount = 0;
   filteredBoardCount = 0;
-  displayedColumns: string[] = ['name', 'board','variant', 'led', 'flash_size'];
+  displayedColumns: string[] = ['name', 'board','variant', 'led', 'mcu', 'flash_size'];
   sortedData: MatTableDataSource<BoardInfo> = new MatTableDataSource<BoardInfo>(this.dataSource);
   filterValue = '';
   httpClient: HttpClient;
@@ -85,6 +85,7 @@ export class BoardOverviewComponent implements OnInit {
               variant: '',
               linkPins: '',
               led: '',
+              mcu: '',
               flash_size: ''
             };
             for (let i = 0; i < this.displayedColumns.length; i++) {
@@ -98,6 +99,8 @@ export class BoardOverviewComponent implements OnInit {
                 board_info.variant = value;
               } else if (header === 'led') {
                 board_info.led = value;
+              } else if (header === 'mcu') {
+                board_info.mcu = value;
               } else if (header === 'flash_size') {
                 board_info.flash_size = value;
               }
@@ -135,6 +138,10 @@ export class BoardOverviewComponent implements OnInit {
           return compare(a.name, b.name, isAsc);
         case 'board':
           return compare(a.board, b.board, isAsc);
+        case 'variant':
+          return compare(a.variant, b.variant, isAsc);
+        case 'mcu':
+          return compare(a.mcu, b.mcu, isAsc);
         case 'led':
           return compareLed(a.led, b.led, isAsc);
         case 'flash_size':
@@ -152,6 +159,7 @@ export interface BoardInfo {
   variant: string;
   linkPins: string;
   led: string;
+  mcu: string;
   flash_size: string;
 }
 
