@@ -43,6 +43,11 @@ class CoreData:
         if match_variant:
             boards[name]["variant"] = match_variant.group(1)
 
+    def __get_mcu(self, line:str, boards: dict, name:str):
+        match_mcu = re.match(name + r"\.build\.mcu=(.+)", line)
+        if match_mcu:
+            boards[name]["mcu"] = match_mcu.group(1)
+
     def __special_pattern_esp8266(self, line:str, boards: dict, name:str):
         pattern = name + r"\.menu\.eesz\.(.+)\.build\.flash_size=(.+)"
         match_partition = re.match(pattern, line)
@@ -72,6 +77,7 @@ class CoreData:
                 if find_name:
                     name = find_name
                 self.__get_variant(line, boards, name)
+                self.__get_mcu(line, boards, name)
                 if self.core_name == "esp8266":
                     flash_size = self.__special_pattern_esp8266(line, boards, name)
                 else:
@@ -163,7 +169,7 @@ class CoreData:
         """
         names = sorted(self.boards.keys())
         with open(filename, "w", encoding='utf8') as file:
-            file.write("name,board,variant,LED,flash_size\n")
+            file.write("name,board,variant,LED,mcu,flash_size\n")
             for board_name in names:
                 if ignore_missing_led and self.boards[board_name]["LED_BUILTIN"] == "N/A":
                     continue
@@ -178,4 +184,8 @@ class CoreData:
                     variant=self.boards[board_name]['variant']
                 else:
                     variant='N/A'
-                file.write(f"{name},{board_name},{variant},{led},{flash_size}\n")
+                if 'mcu' in self.boards[board_name]:
+                    mcu=self.boards[board_name]['mcu']
+                else:
+                    mcu='N/A'
+                file.write(f"{name},{board_name},{variant},{led},{mcu},{flash_size}\n")

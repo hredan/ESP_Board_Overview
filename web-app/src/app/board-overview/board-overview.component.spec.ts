@@ -6,11 +6,11 @@ import { provideHttpClient } from '@angular/common/http';
 import { Sort } from '@angular/material/sort';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
-const csv_header = 'name,board,variant,led,flash_size\n';
-const testset_answer = csv_header + 'LOLIN(WeMos) D1 R1,d1,d1,2,[4MB]\nSparkFun Blynk Board,blynk,thing,5,[8MB]\n';
-const testset_answer_na = csv_header + 'LOLIN(WeMos) D1 R1,d1,d1,2,[4MB]\nSparkFun Blynk Board,blynk,N/A,N/A,[N/A]\n';
-const testset_na = 'WiFiduino,wifiduino,wifiduino,N/A,[4MB]\n';
-const testset_generic = 'Generic ESP8266 Module,generic,generic,1,[512KB;1MB;2MB;4MB;8MB;16MB]\n';
+const csv_header = 'name,board,variant,led,mcu,flash_size\n';
+const testset_answer = csv_header + 'LOLIN(WeMos) D1 R1,d1,d1,2,esp8266a,[4MB]\nSparkFun Blynk Board,blynk,thing,5,esp8266b,[8MB]\n';
+const testset_answer_na = csv_header + 'LOLIN(WeMos) D1 R1,d1,d1,2,esp8266,[4MB]\nSparkFun Blynk Board,blynk,N/A,N/A,N/A,[N/A]\n';
+const testset_na = 'WiFiduino,wifiduino,wifiduino,N/A,esp8266,[4MB]\n';
+const testset_generic = 'Generic ESP8266 Module,generic,generic,1,esp8266,[512KB;1MB;2MB;4MB;8MB;16MB]\n';
 
 describe('BoardOverviewComponent', () => {
   let component: BoardOverviewComponent;
@@ -228,6 +228,26 @@ describe('BoardOverviewComponent', () => {
     expect(data[0].flash_size).toBe('[512KB;1MB;2MB;4MB;8MB;16MB]');
     expect(data[1].flash_size).toBe('[8MB]');
     expect(data[2].flash_size).toBe('[4MB]');
+  }
+  );
+
+  it('should sort data by mcu asc', () => {
+    testReq(testset_answer);
+    const sort: Sort = { active: 'mcu', direction: 'asc' };
+    component.sortData(sort);
+    const data: BoardInfo[] = component.sortedData.data.slice();
+    expect(data[0].mcu).toBe('esp8266a');
+    expect(data[1].mcu).toBe('esp8266b');
+  }
+  );
+
+  it('should sort data by variant asc', () => {
+    testReq(testset_answer);
+    const sort: Sort = { active: 'variant', direction: 'asc' };
+    component.sortData(sort);
+    const data: BoardInfo[] = component.sortedData.data.slice();
+    expect(data[0].variant).toBe('d1');
+    expect(data[1].variant).toBe('thing');
   }
   );
 });
