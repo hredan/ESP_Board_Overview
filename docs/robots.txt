@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://hredan.github.io/ESP_Board_Overview/sitemap.xml
