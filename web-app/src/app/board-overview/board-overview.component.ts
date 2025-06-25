@@ -7,11 +7,11 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {Sort, MatSortModule} from '@angular/material/sort';
 import { HttpClient} from '@angular/common/http';
 import coreList_input from '../../../public/core_list.json';
-import { NgIf } from '@angular/common';
+
 
 @Component({
   selector: 'app-board-overview',
-  imports: [MatTableModule, MatInputModule, MatFormFieldModule, MatSortModule, MatPaginatorModule, MatCheckboxModule, NgIf],
+  imports: [MatTableModule, MatInputModule, MatFormFieldModule, MatSortModule, MatPaginatorModule, MatCheckboxModule],
   templateUrl: './board-overview.component.html',
   styleUrl: './board-overview.component.css'
 })
