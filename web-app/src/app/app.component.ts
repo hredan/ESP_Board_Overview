@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLinkActive, RouterLink } from '@angular/router';
 import { ChildrenOutletContexts } from '@angular/router';
 // import { AppRoutingModule } from './app.routes';
@@ -12,5 +12,5 @@ import { ChildrenOutletContexts } from '@angular/router';
 
 export class AppComponent {
   title = 'ESP-Board Overview';
-  constructor(private contexts: ChildrenOutletContexts) { }
+  private contexts = inject(ChildrenOutletContexts);
 }
