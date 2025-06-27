@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BoardOverviewComponent, BoardInfo } from '../board-overview/board-overview.component';
 import board_data from '../../../data/esp8266.json';
 
