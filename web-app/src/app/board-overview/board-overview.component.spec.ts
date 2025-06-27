@@ -88,7 +88,7 @@ describe('BoardOverviewComponent', () => {
 
   it('should render title', () => {
       const compiled = fixture.nativeElement as HTMLElement;
-      expect(compiled.querySelector('h1')?.textContent).toContain(testCoreName.toUpperCase() + ' Board Overview');
+      expect(compiled.querySelector('h2')?.textContent).toContain(testCoreName.toUpperCase() + ' Board Overview');
     });
 
   it('should apply filter', () => {
