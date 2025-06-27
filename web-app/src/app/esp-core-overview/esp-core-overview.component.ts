@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import coreList_input from '../../../public/core_list.json';
+import coreList_input from '../../../data/core_list.json';
 import { RouterLinkActive, RouterLink } from '@angular/router';
 
 @Component({

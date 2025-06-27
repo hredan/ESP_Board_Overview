@@ -1,0 +1,643 @@
+[
+    {
+        "name": "Lifely Agrumino Lemon v4",
+        "variant": "agruminolemonv4",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "2M64",
+            "2M128",
+            "2M256",
+            "2M512",
+            "2M1M",
+            "2M"
+        ],
+        "flash_size": "[2MB]",
+        "LED_BUILTIN": "2",
+        "board": "agruminolemon",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/agruminolemonv4/pins_arduino.h"
+    },
+    {
+        "name": "Arduino",
+        "mcu": "esp8266",
+        "variant": "generic",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "1",
+        "board": "arduino-esp8266",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/generic/pins_arduino.h"
+    },
+    {
+        "name": "SparkFun Blynk Board",
+        "variant": "thing",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "5",
+        "board": "blynk",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/thing/pins_arduino.h"
+    },
+    {
+        "name": "XinaBox CW01",
+        "variant": "xinabox",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "5",
+        "board": "cw01",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/xinabox/pins_arduino.h"
+    },
+    {
+        "name": "LOLIN(WeMos) D1 R1",
+        "variant": "d1",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "2",
+        "board": "d1",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/d1/pins_arduino.h"
+    },
+    {
+        "name": "LOLIN(WEMOS) D1 R2 & mini",
+        "variant": "d1_mini",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "2",
+        "board": "d1_mini",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/d1_mini/pins_arduino.h"
+    },
+    {
+        "name": "LOLIN(WEMOS) D1 mini (clone)",
+        "variant": "d1_mini",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "2",
+        "board": "d1_mini_clone",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/d1_mini/pins_arduino.h"
+    },
+    {
+        "name": "LOLIN(WEMOS) D1 mini Lite",
+        "variant": "d1_mini",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "1M64",
+            "1M128",
+            "1M144",
+            "1M160",
+            "1M192",
+            "1M256",
+            "1M512",
+            "1M"
+        ],
+        "flash_size": "[1MB]",
+        "LED_BUILTIN": "2",
+        "board": "d1_mini_lite",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/d1_mini/pins_arduino.h"
+    },
+    {
+        "name": "LOLIN(WEMOS) D1 mini Pro",
+        "variant": "d1_mini",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "16M14M",
+            "16M15M",
+            "16M"
+        ],
+        "flash_size": "[16MB]",
+        "LED_BUILTIN": "2",
+        "board": "d1_mini_pro",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/d1_mini/pins_arduino.h"
+    },
+    {
+        "name": "LOLIN(WEMOS) D1 ESP-WROOM-02",
+        "variant": "d1_mini",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "2M64",
+            "2M128",
+            "2M256",
+            "2M512",
+            "2M1M",
+            "2M"
+        ],
+        "flash_size": "[2MB]",
+        "LED_BUILTIN": "2",
+        "board": "d1_wroom_02",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/d1_mini/pins_arduino.h"
+    },
+    {
+        "name": "Schirmilabs Eduino WiFi",
+        "variant": "eduinowifi",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "2",
+        "board": "eduinowifi",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/eduinowifi/pins_arduino.h"
+    },
+    {
+        "name": "SweetPea ESP-210",
+        "mcu": "esp8266",
+        "variant": "generic",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "1",
+        "board": "esp210",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/generic/pins_arduino.h"
+    },
+    {
+        "name": "Generic ESP8285 Module",
+        "variant": "esp8285",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "1M64",
+            "1M128",
+            "1M144",
+            "1M160",
+            "1M192",
+            "1M256",
+            "1M512",
+            "1M",
+            "2M64",
+            "2M128",
+            "2M256",
+            "2M512",
+            "2M1M",
+            "2M"
+        ],
+        "flash_size": "[1MB;2MB]",
+        "LED_BUILTIN": "1",
+        "board": "esp8285",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/esp8285/pins_arduino.h"
+    },
+    {
+        "name": "ESPDuino (ESP-13 Module)",
+        "variant": "ESPDuino",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "16",
+        "board": "espduino",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/ESPDuino/pins_arduino.h"
+    },
+    {
+        "name": "ESPectro Core",
+        "variant": "espectro",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "15",
+        "board": "espectro",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/espectro/pins_arduino.h"
+    },
+    {
+        "name": "ESPino (ESP-12 Module)",
+        "variant": "espino",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "2",
+        "board": "espino",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/espino/pins_arduino.h"
+    },
+    {
+        "name": "ThaiEasyElec's ESPino",
+        "variant": "espinotee",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "16",
+        "board": "espinotee",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/espinotee/pins_arduino.h"
+    },
+    {
+        "name": "DOIT ESP-Mx DevKit (ESP8285)",
+        "variant": "esp8285",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "1M64",
+            "1M128",
+            "1M144",
+            "1M160",
+            "1M192",
+            "1M256",
+            "1M512",
+            "1M"
+        ],
+        "flash_size": "[1MB]",
+        "LED_BUILTIN": "1",
+        "board": "espmxdevkit",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/esp8285/pins_arduino.h"
+    },
+    {
+        "name": "ESPresso Lite 1.0",
+        "variant": "espresso_lite_v1",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "16",
+        "board": "espresso_lite_v1",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/espresso_lite_v1/pins_arduino.h"
+    },
+    {
+        "name": "ESPresso Lite 2.0",
+        "variant": "espresso_lite_v2",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "2",
+        "board": "espresso_lite_v2",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/espresso_lite_v2/pins_arduino.h"
+    },
+    {
+        "name": "4D Systems gen4 IoD Range",
+        "variant": "generic",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "2M64",
+            "2M128",
+            "2M256",
+            "2M512",
+            "2M1M",
+            "2M",
+            "512K32",
+            "512K64",
+            "512K128",
+            "512K"
+        ],
+        "flash_size": "[512KB;2MB]",
+        "LED_BUILTIN": "1",
+        "board": "gen4iod",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/generic/pins_arduino.h"
+    },
+    {
+        "name": "Generic ESP8266 Module",
+        "mcu": "esp8266",
+        "variant": "generic",
+        "flash_partitions": [
+            "1M64",
+            "1M128",
+            "1M144",
+            "1M160",
+            "1M192",
+            "1M256",
+            "1M512",
+            "1M",
+            "2M64",
+            "2M128",
+            "2M256",
+            "2M512",
+            "2M1M",
+            "2M",
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M",
+            "8M6M",
+            "8M7M",
+            "8M",
+            "16M14M",
+            "16M15M",
+            "16M",
+            "512K32",
+            "512K64",
+            "512K128",
+            "512K"
+        ],
+        "flash_size": "[512KB;1MB;2MB;4MB;8MB;16MB]",
+        "LED_BUILTIN": "1",
+        "board": "generic",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/generic/pins_arduino.h"
+    },
+    {
+        "name": "Adafruit Feather HUZZAH ESP8266",
+        "variant": "adafruit",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "0",
+        "board": "huzzah",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/adafruit/pins_arduino.h"
+    },
+    {
+        "name": "Invent One",
+        "variant": "inventone",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "2",
+        "board": "inventone",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/inventone/pins_arduino.h"
+    },
+    {
+        "name": "Olimex MOD-WIFI-ESP8266(-DEV)",
+        "variant": "modwifi",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "2M64",
+            "2M128",
+            "2M256",
+            "2M512",
+            "2M1M",
+            "2M"
+        ],
+        "flash_size": "[2MB]",
+        "LED_BUILTIN": "1",
+        "board": "modwifi",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/modwifi/pins_arduino.h"
+    },
+    {
+        "name": "NodeMCU 0.9 (ESP-12 Module)",
+        "variant": "nodemcu",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "2",
+        "board": "nodemcu",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/nodemcu/pins_arduino.h"
+    },
+    {
+        "name": "NodeMCU 1.0 (ESP-12E Module)",
+        "variant": "nodemcu",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "2",
+        "board": "nodemcuv2",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/nodemcu/pins_arduino.h"
+    },
+    {
+        "name": "Digistump Oak",
+        "variant": "oak",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "5",
+        "board": "oak",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/oak/pins_arduino.h"
+    },
+    {
+        "name": "Phoenix 1.0",
+        "variant": "phoenix_v1",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "16",
+        "board": "phoenix_v1",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/phoenix_v1/pins_arduino.h"
+    },
+    {
+        "name": "Phoenix 2.0",
+        "variant": "phoenix_v2",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "2",
+        "board": "phoenix_v2",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/phoenix_v2/pins_arduino.h"
+    },
+    {
+        "name": "ITEAD Sonoff",
+        "variant": "itead",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "1M64",
+            "1M128",
+            "1M144",
+            "1M160",
+            "1M192",
+            "1M256",
+            "1M512",
+            "1M"
+        ],
+        "flash_size": "[1MB]",
+        "LED_BUILTIN": "13",
+        "board": "sonoff",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/itead/pins_arduino.h"
+    },
+    {
+        "name": "SparkFun ESP8266 Thing",
+        "variant": "thing",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "512K32",
+            "512K64",
+            "512K128",
+            "512K"
+        ],
+        "flash_size": "[512KB]",
+        "LED_BUILTIN": "5",
+        "board": "thing",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/thing/pins_arduino.h"
+    },
+    {
+        "name": "SparkFun ESP8266 Thing Dev",
+        "variant": "thing",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "512K32",
+            "512K64",
+            "512K128",
+            "512K"
+        ],
+        "flash_size": "[512KB]",
+        "LED_BUILTIN": "5",
+        "board": "thingdev",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/thing/pins_arduino.h"
+    },
+    {
+        "name": "WiFi Kit 8",
+        "variant": "wifi_kit_8",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "0",
+        "board": "wifi_kit_8",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/wifi_kit_8/pins_arduino.h"
+    },
+    {
+        "name": "Amperka WiFi Slot",
+        "variant": "wifi_slot",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "1M64",
+            "1M128",
+            "1M144",
+            "1M160",
+            "1M192",
+            "1M256",
+            "1M512",
+            "1M",
+            "2M64",
+            "2M128",
+            "2M256",
+            "2M512",
+            "2M1M",
+            "2M"
+        ],
+        "flash_size": "[1MB;2MB]",
+        "LED_BUILTIN": "2",
+        "board": "wifi_slot",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/wifi_slot/pins_arduino.h"
+    },
+    {
+        "name": "WiFiduino",
+        "variant": "wifiduino",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "N/A",
+        "board": "wifiduino",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/wifiduino/pins_arduino.h"
+    },
+    {
+        "name": "WifInfo",
+        "variant": "wifinfo",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "1M64",
+            "1M128",
+            "1M144",
+            "1M160",
+            "1M192",
+            "1M256",
+            "1M512",
+            "1M"
+        ],
+        "flash_size": "[1MB]",
+        "LED_BUILTIN": "12",
+        "board": "wifinfo",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/wifinfo/pins_arduino.h"
+    },
+    {
+        "name": "Seeed Wio Link",
+        "variant": "wiolink",
+        "mcu": "esp8266",
+        "flash_partitions": [
+            "4M2M",
+            "4M3M",
+            "4M1M",
+            "4M"
+        ],
+        "flash_size": "[4MB]",
+        "LED_BUILTIN": "2",
+        "board": "wiolink",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/3.1.2/variants/wiolink/pins_arduino.h"
+    }
+]

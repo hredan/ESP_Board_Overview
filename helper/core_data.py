@@ -8,6 +8,7 @@ Author: hredan
 Copyright (c) 2025 hredan"""
 import re
 import os.path
+import json
 
 class CoreData:
     """
@@ -17,6 +18,7 @@ class CoreData:
     def __init__(self, core_name:str, core_version: str,
                  arduino_path:str="/home/vscode/.arduino15"):
         self.core_name = core_name
+        self.core_version = core_version
         self.num_of_boards_without_led = 0
         self.core_path = arduino_path + f"/packages/{core_name}/hardware/{core_name}/{core_version}"
         if not os.path.exists(self.core_path):
@@ -160,7 +162,7 @@ class CoreData:
             flash_size=self.boards[board_name]['flash_size']
             print(f"{name} | {board_name} | {led} | {flash_size}")
 
-    def export_csv(self, filename:str, ignore_missing_led=True):
+    def boards_export_csv(self, filename:str, ignore_missing_led=True):
         """
         Export the table of boards with their name, LED_BUILTIN, and flash size to a CSV file.	
         :param filename: The name of the CSV file to export to.
@@ -189,3 +191,37 @@ class CoreData:
                 else:
                     mcu='N/A'
                 file.write(f"{name},{board_name},{variant},{led},{mcu},{flash_size}\n")
+
+    def boards_export_json(self, filename:str):
+        """
+        Export the table of boards with their name, LED_BUILTIN, and flash size to a JSON file.
+        :param filename: The name of the JSON file to export to.
+        :return: None
+        """
+        boards = []
+        names = sorted(self.boards.keys())
+        for board_name in names:
+            board_data = self.boards[board_name]
+            # fill missing data entries with "N/A"
+            board_data['board'] = board_name
+            if 'LED_BUILTIN' not in board_data:
+                board_data['LED_BUILTIN'] = "N/A"
+            if 'flash_size' not in board_data:
+                board_data['flash_size'] = '[N/A]'
+            else:
+                flash_size_value = board_data['flash_size']
+                board_data['flash_size'] = f"[{';'.join(flash_size_value)}]"
+            if 'variant' not in board_data:
+                board_data['variant'] = "N/A"
+            else:
+                if self.core_name == "esp8266":
+                    board_data['linkPins'] = f"https://github.com/esp8266/Arduino/blob/{self.core_version}/variants/{board_data['variant']}/pins_arduino.h"
+                elif self.core_name == "esp32":
+                    board_data['linkPins'] = f"https://github.com/espressif/arduino-esp32/blob/{self.core_version}/variants/{board_data['variant']}/pins_arduino.h"
+            if 'mcu' not in board_data:
+                board_data['mcu'] = "N/A"
+
+            boards.append(board_data)
+            
+        with open(filename, "w", encoding='utf8') as file:
+            json.dump(boards, file, indent=4, ensure_ascii=False)
