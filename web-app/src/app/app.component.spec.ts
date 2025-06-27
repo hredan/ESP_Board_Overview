@@ -27,16 +27,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'ESP-Board Overview' title`, () => {
+  it(`should have the 'ESP Board Overview' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('ESP-Board Overview');
+    expect(app.title).toEqual('ESP Board Overview');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('ESP-Board Overview');
+    expect(compiled.querySelector('h1')?.textContent).toContain('ESP Board Overview');
   });
 });
