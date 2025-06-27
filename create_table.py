@@ -53,4 +53,5 @@ if __name__ == "__main__":
         print(f"core: {core_info['core_name']}")
         print(f"number of boards: {len(cd.boards)}")
         print(f"number of boards without led: {cd.num_of_boards_without_led}")
-        cd.export_csv(filename=core_info['core_name']+".csv", ignore_missing_led=False)
+        cd.boards_export_csv(filename=core_info['core_name']+".csv", ignore_missing_led=False)
+        cd.boards_export_json(filename=core_info['core_name']+".json")

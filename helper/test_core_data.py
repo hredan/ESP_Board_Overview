@@ -1,6 +1,8 @@
 """Test cases for the CoreData class."""
+import json
 import pytest
 from helper.core_data import CoreData
+
 
 @pytest.fixture(name="setup")
 def fixture_setup(tmp_path):
@@ -201,7 +203,7 @@ def test_export_csv(setup_wrong_led_builtin_value, tmpdir):
     file = tmpdir / "esp8266.csv"
     core_data = CoreData("esp8266", "2.7.4", str(setup_wrong_led_builtin_value))
     # clear the output buffer
-    core_data.export_csv(filename=file.strpath, ignore_missing_led=False)
+    core_data.boards_export_csv(filename=file.strpath, ignore_missing_led=False)
     # Check if the output contains the expected values
     expected_header = "name,board,variant,LED,mcu,flash_size\n"
     expected_row = "LOLIN(WEMOS) D1 R2 & mini,d1_mini,d1_mini,N/A,esp8266,[4MB]\n"
@@ -212,7 +214,7 @@ def test_export_csv_ignore_na_led(setup_wrong_led_builtin_value, tmpdir):
     file = tmpdir / "esp8266.csv"
     core_data = CoreData("esp8266", "2.7.4", str(setup_wrong_led_builtin_value))
     # clear the output buffer
-    core_data.export_csv(filename=file.strpath, ignore_missing_led=True)
+    core_data.boards_export_csv(filename=file.strpath, ignore_missing_led=True)
     # Check if the output contains the expected values
     assert file.read()== "name,board,variant,LED,mcu,flash_size\n"
 
@@ -221,8 +223,75 @@ def test_export_csv_flash_size_na(setup_esp32_without_variant_flash_size, tmpdir
     file = tmpdir / "esp32.csv"
     core_data = CoreData("esp32", "3.2.0", str(setup_esp32_without_variant_flash_size))
     # clear the output buffer
-    core_data.export_csv(filename=file.strpath, ignore_missing_led=False)
+    core_data.boards_export_csv(filename=file.strpath, ignore_missing_led=False)
     # Check if the output contains the expected values
     expected_header = "name,board,variant,LED,mcu,flash_size\n"
     expected_row = "WEMOS D1 MINI ESP32,d1_mini32,N/A,N/A,N/A,[N/A]\n"
     assert file.read()== expected_header + expected_row
+
+def test_export_json(setup_wrong_led_builtin_value, tmpdir):
+    """Test the export_json method of CoreData."""
+    file = tmpdir / "esp8266.json"
+    core_data = CoreData("esp8266", "2.7.4", str(setup_wrong_led_builtin_value))
+    # clear the output buffer
+    core_data.boards_export_json(filename=file.strpath)
+    # Check if the output contains the expected values
+    expected_data = {
+        "board": "d1_mini",
+        "variant": "d1_mini",
+        "LED_BUILTIN": "N/A",
+        "mcu": "esp8266",
+        "flash_size": "[4MB]",
+        "linkPins": "https://github.com/esp8266/Arduino/blob/2.7.4/variants/d1_mini/pins_arduino.h",
+        "name": "LOLIN(WEMOS) D1 R2 & mini",
+        "flash_partitions": ["4M"],
+    }
+    with open(file.strpath, 'r', encoding='utf8') as file:
+        data = json.loads(file.read())
+    assert isinstance(data, list)
+    assert len(data) == 1
+    assert data[0] == expected_data
+
+def test_export_json_esp32(setup_esp32, tmpdir):
+    """Test the export_json method of CoreData."""
+    file = tmpdir / "esp32.json"
+    core_data = CoreData("esp32", "3.2.0", str(setup_esp32))
+    # clear the output buffer
+    core_data.boards_export_json(filename=file.strpath)
+    # Check if the output contains the expected values
+    expected_data = {
+        "board": "d1_mini32",
+        "variant": "d1_mini32",
+        "LED_BUILTIN": "2",
+        "mcu": "esp32",
+        "flash_size": "[4MB]",
+        "linkPins": "https://github.com/espressif/arduino-esp32/blob/3.2.0/" \
+            "variants/d1_mini32/pins_arduino.h",
+        "name": "WEMOS D1 MINI ESP32"
+    }
+    with open(file.strpath, 'r', encoding='utf8') as file:
+        data = json.loads(file.read())
+    assert isinstance(data, list)
+    assert len(data) == 1
+    assert data[0] == expected_data
+
+def test_export_json_esp32_na(setup_esp32_without_variant_flash_size, tmpdir):
+    """Test the export_json method of CoreData."""
+    file = tmpdir / "esp32.json"
+    core_data = CoreData("esp32", "3.2.0", str(setup_esp32_without_variant_flash_size))
+    # clear the output buffer
+    core_data.boards_export_json(filename=file.strpath)
+    # Check if the output contains the expected values
+    expected_data = {
+        "board": "d1_mini32",
+        "variant": "N/A",
+        "LED_BUILTIN": "N/A",
+        "mcu": "N/A",
+        "flash_size": "[N/A]",
+        "name": "WEMOS D1 MINI ESP32"
+    }
+    with open(file.strpath, 'r', encoding='utf8') as file:
+        data = json.loads(file.read())
+    assert isinstance(data, list)
+    assert len(data) == 1
+    assert data[0] == expected_data

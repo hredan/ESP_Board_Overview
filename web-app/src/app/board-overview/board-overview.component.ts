@@ -1,17 +1,15 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, input, OnInit } from '@angular/core';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatInputModule} from '@angular/material/input';
 import { MatCheckboxModule, MatCheckboxChange } from '@angular/material/checkbox';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {Sort, MatSortModule} from '@angular/material/sort';
-import { HttpClient} from '@angular/common/http';
-import coreList_input from '../../../public/core_list.json';
-import { NgIf } from '@angular/common';
+import coreList_input from '../../../data/core_list.json';
 
 @Component({
   selector: 'app-board-overview',
-  imports: [MatTableModule, MatInputModule, MatFormFieldModule, MatSortModule, MatPaginatorModule, MatCheckboxModule, NgIf],
+  imports: [MatTableModule, MatInputModule, MatFormFieldModule, MatSortModule, MatPaginatorModule, MatCheckboxModule],
   templateUrl: './board-overview.component.html',
   styleUrl: './board-overview.component.css'
 })
@@ -19,38 +17,39 @@ import { NgIf } from '@angular/common';
 export class BoardOverviewComponent implements OnInit {
   checked = false;
   coreName = input.required<string>();
-  dataSource: BoardInfo[] = [];
+  dataSource = input.required<BoardInfo[]>();
+  //dataSource: BoardInfo[] = [];
   totalBoardCount = 0;
   filteredBoardCount = 0;
   displayedColumns: string[] = ['name', 'board','variant', 'led', 'mcu', 'flash_size'];
-  sortedData: MatTableDataSource<BoardInfo> = new MatTableDataSource<BoardInfo>(this.dataSource);
+  sortedData: MatTableDataSource<BoardInfo> = new MatTableDataSource<BoardInfo>([]);
   filterValue = '';
-  httpClient: HttpClient;
   coreList: Core[] = (coreList_input as Core[]);
   coreVersion = '';
 
-  constructor() { this.httpClient = inject(HttpClient); }
   ngOnInit() {
+    this.totalBoardCount = this.dataSource().length;
+    this.filteredBoardCount = this.dataSource().length;
+    this.sortedData = new MatTableDataSource<BoardInfo>(this.dataSource());
     this.coreList.forEach((core) => {
       if (core.core_name === this.coreName()) {
         this.coreVersion = core.installed_version;
       }
     });
-    this.getBoardData(this.coreName());
   }
 
   updateTable() {
     if (this.checked) {
       const ignoreNA: BoardInfo[] = [];
-      this.dataSource.forEach((boardInfo) => {
-        if (boardInfo.led !== 'N/A') {
+      this.dataSource().forEach((boardInfo) => {
+        if (boardInfo.LED_BUILTIN !== 'N/A') {
           ignoreNA.push(boardInfo);
         }
       });
       this.sortedData = new MatTableDataSource<BoardInfo>(ignoreNA);
     }
     else {
-      this.sortedData = new MatTableDataSource<BoardInfo>(this.dataSource);
+      this.sortedData = new MatTableDataSource<BoardInfo>(this.dataSource());
     }
     
     this.sortedData.filter = this.filterValue.trim().toLowerCase();
@@ -66,62 +65,7 @@ export class BoardOverviewComponent implements OnInit {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.updateTable();
   }
-  getBoardData(coreName = '') {
-    const csvFilePath = './' + coreName + '.csv';
-    this.httpClient
-      .get(csvFilePath, { responseType: 'text' })
-      .subscribe((data) => {
-        const csvData: string = data;
-        const lines = csvData.split('\n');
-        // remove header
-        lines.shift();
-        const boardInfos: BoardInfo[] = [];
-        lines.forEach((line) => {
-          const values = line.split(',');
-          if (values.length == this.displayedColumns.length) {
-            const board_info: BoardInfo= {
-              name: '',
-              board: '',
-              variant: '',
-              linkPins: '',
-              led: '',
-              mcu: '',
-              flash_size: ''
-            };
-            for (let i = 0; i < this.displayedColumns.length; i++) {
-              const header = this.displayedColumns[i].trim();
-              const value = values[i].trim();
-              if (header === 'name') {
-                board_info.name = value;
-              } else if (header === 'board') {
-                board_info.board = value;
-              } else if (header === 'variant') {
-                board_info.variant = value;
-              } else if (header === 'led') {
-                board_info.led = value;
-              } else if (header === 'mcu') {
-                board_info.mcu = value;
-              } else if (header === 'flash_size') {
-                board_info.flash_size = value;
-              }
-            }
-            if (board_info.variant !== 'N/A') {
-              if (this.coreName() === 'esp32') {
-                board_info.linkPins = "https://github.com/espressif/arduino-esp32/blob/" + this.coreVersion + "/variants/" + board_info.variant + "/pins_arduino.h"
-              }
-              else if (this.coreName() === 'esp8266') {
-                board_info.linkPins = "https://github.com/esp8266/Arduino/blob/" + this.coreVersion + "/variants/" + board_info.variant + "/pins_arduino.h";
-              }
-            }
-            boardInfos.push(board_info);
-          }
-          this.dataSource = boardInfos;
-          this.totalBoardCount = this.dataSource.length;
-          this.filteredBoardCount = this.dataSource.length;
-          this.sortedData = new MatTableDataSource<BoardInfo>(this.dataSource);
-        });
-      });
-  }
+
   sortData(sort: Sort) {
     let data : BoardInfo[] = [];
     if (this.filterValue != '') {
@@ -143,7 +87,7 @@ export class BoardOverviewComponent implements OnInit {
         case 'mcu':
           return compare(a.mcu, b.mcu, isAsc);
         case 'led':
-          return compareLed(a.led, b.led, isAsc);
+          return compareLed(a.LED_BUILTIN, b.LED_BUILTIN, isAsc);
         case 'flash_size':
           return compareFlashSize(a.flash_size, b.flash_size, isAsc);
         default:
@@ -158,7 +102,7 @@ export interface BoardInfo {
   board: string;
   variant: string;
   linkPins: string;
-  led: string;
+  LED_BUILTIN: string;
   mcu: string;
   flash_size: string;
 }

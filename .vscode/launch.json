@@ -12,10 +12,17 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Launch Edge against localhost",
             "type": "msedge",
             "request": "launch",
-            "name": "Launch Edge against localhost",
             "url": "http://localhost:4200",
+            "webRoot": "${workspaceFolder}/web-app"
+        },
+        {
+            "name": "Launch Edge Karma Test",
+            "type": "msedge",
+            "request": "launch",
+            "url": "http://localhost:9876",
             "webRoot": "${workspaceFolder}/web-app"
         }
     ]

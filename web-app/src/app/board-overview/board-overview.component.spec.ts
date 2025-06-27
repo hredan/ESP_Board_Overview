@@ -1,16 +1,57 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-
 import { BoardOverviewComponent, BoardInfo } from './board-overview.component';
-import { provideHttpClient } from '@angular/common/http';
 import { Sort } from '@angular/material/sort';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
-const csv_header = 'name,board,variant,led,mcu,flash_size\n';
-const testset_answer = csv_header + 'LOLIN(WeMos) D1 R1,d1,d1,2,esp8266a,[4MB]\nSparkFun Blynk Board,blynk,thing,5,esp8266b,[8MB]\n';
-const testset_answer_na = csv_header + 'LOLIN(WeMos) D1 R1,d1,d1,2,esp8266,[4MB]\nSparkFun Blynk Board,blynk,N/A,N/A,N/A,[N/A]\n';
-const testset_na = 'WiFiduino,wifiduino,wifiduino,N/A,esp8266,[4MB]\n';
-const testset_generic = 'Generic ESP8266 Module,generic,generic,1,esp8266,[512KB;1MB;2MB;4MB;8MB;16MB]\n';
+const data_lolin: BoardInfo = {
+  name: 'LOLIN(WeMos) D1 R1',
+  board: 'd1',
+  variant: 'd1',
+  LED_BUILTIN: '2',
+  mcu: 'esp8266a',
+  flash_size: '[4MB]',
+  linkPins: "https://fake-link.com/blynk-board-pins"
+};
+
+const data_blynk: BoardInfo = {
+  name: 'SparkFun Blynk Board',
+  board: 'blynk',
+  variant: 'thing',
+  LED_BUILTIN: '5',
+  mcu: 'esp8266b',
+  flash_size: '[8MB]',
+  linkPins: "https://fake-link.com/blynk-board-pins"
+};
+
+const data_wifiduino: BoardInfo = {
+  name: 'WiFiduino',
+  board: 'wifiduino',
+  variant: 'wifiduino',
+  LED_BUILTIN: 'N/A',
+  mcu: 'esp8266',
+  flash_size: '[4MB]',
+  linkPins: "https://fake-link.com/blynk-board-pins"
+};
+
+const data_generic: BoardInfo = {
+  name: 'Generic ESP8266 Module',
+  board: 'generic',
+  variant: 'generic',
+  LED_BUILTIN: '1',
+  mcu: 'esp8266',
+  flash_size: '[512KB;1MB;2MB;4MB;8MB;16MB]',
+  linkPins: "https://fake-link.com/blynk-board-pins"
+};
+
+const data_lolin_na: BoardInfo = {
+  name: 'LOLIN(WeMos) D1 R1',
+  board: 'd1',
+  variant: 'N/A',
+  LED_BUILTIN: 'N/A',
+  mcu: 'N/A',
+  flash_size: '[N/A]',
+  linkPins: "https://fake-link.com/blynk-board-pins"
+};
 
 describe('BoardOverviewComponent', () => {
   let component: BoardOverviewComponent;
@@ -20,69 +61,37 @@ describe('BoardOverviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting()
       ],
       imports: [BoardOverviewComponent]
     })
     .compileComponents();
 
+    createComponent();
+  });
+
+  function createComponent(dataSource: BoardInfo[] = [data_lolin, data_blynk]) {
     fixture = TestBed.createComponent(BoardOverviewComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('coreName', testCoreName);
+    fixture.componentRef.setInput('dataSource', dataSource);
     fixture.detectChanges();
-  });
+  }
 
-  afterEach(() => {
-    TestBed.inject(HttpTestingController).verify();
-  });
-
-  function testReq(reqAnswer = "") {
-    const httpTesting = TestBed.inject(HttpTestingController);
-    const req = httpTesting.expectOne('./'+ testCoreName +'.csv');
-    if (reqAnswer !== "") {
-      req.flush(reqAnswer);
-    }
-    else{
-      req.flush(testset_answer);
-    }
-}
 
   it('should create', () => {
-    testReq();
     expect(component).toBeTruthy();
   });
 
   it('should have the correct core name', () => {
-    testReq();
     expect(component.coreName()).toEqual(testCoreName);
   });
 
-  it('should fetch board data from CSV file', () => {
-    testReq(testset_answer);
-    expect(component.dataSource.length).toBe(2);
-    expect(component.dataSource[0].name).toBe('LOLIN(WeMos) D1 R1');
-    expect(component.dataSource[1].name).toBe('SparkFun Blynk Board');
-  }
-  );
-
-  it('should fetch board data from CSV file with empty lines at end', () => {
-    const csvData = testset_answer + '\n';
-    testReq(csvData);
-    expect(component.dataSource.length).toBe(2);
-    expect(component.dataSource[0].board).toBe('d1');
-    expect(component.dataSource[1].board).toBe('blynk');
-  }
-  );
-
   it('should render title', () => {
-      testReq();
       const compiled = fixture.nativeElement as HTMLElement;
       expect(compiled.querySelector('h1')?.textContent).toContain(testCoreName.toUpperCase() + ' Board Overview');
     });
 
   it('should apply filter', () => {
-    testReq(testset_answer);
     const mockEvent: Event = 
     ({
       target: {
@@ -97,7 +106,6 @@ describe('BoardOverviewComponent', () => {
   );
 
   it('should apply filter with empty string', () => {
-    testReq(testset_answer);
     const mockEvent: Event = ({
       target: {
           value: ''
@@ -109,7 +117,7 @@ describe('BoardOverviewComponent', () => {
   );
 
   it('should apply filter ignore led N/A', () => {
-    testReq(testset_answer_na);
+    createComponent([data_lolin, data_wifiduino]);
     const mockEvent: MatCheckboxChange = new MatCheckboxChange ();
     mockEvent.checked = true;
 
@@ -119,18 +127,15 @@ describe('BoardOverviewComponent', () => {
   );
 
   it('should sort data by name', () => {
-    testReq(testset_answer);
-
     const sort: Sort = { active: 'name', direction: 'asc' };
     component.sortData(sort);
-    expect(component.dataSource[0].board).toBe('d1');
-    expect(component.dataSource[1].board).toBe('blynk');
+    expect(component.dataSource()[0].board).toBe('d1');
+    expect(component.dataSource()[1].board).toBe('blynk');
 
   }
   );
 
   it('should sort data by board asc', () => {
-    testReq(testset_answer);
     const sort: Sort = { active: 'board', direction: 'asc' };
     component.sortData(sort);
     const data: BoardInfo[] = component.sortedData.data.slice();
@@ -141,7 +146,6 @@ describe('BoardOverviewComponent', () => {
   );
 
   it('should sort data by board desc', () => {
-    testReq(testset_answer);
     const sort: Sort = { active: 'board', direction: 'desc' };
     component.sortData(sort);
     const data: BoardInfo[] = component.sortedData.data.slice();
@@ -151,50 +155,46 @@ describe('BoardOverviewComponent', () => {
   );
 
   it('should sort data by led asc', () => {
-    testReq(testset_answer);
     const sort: Sort = { active: 'led', direction: 'asc' };
     component.sortData(sort);
     const data: BoardInfo[] = component.sortedData.data.slice();
-    expect(data[0].led).toBe('2');
-    expect(data[1].led).toBe('5');
+    expect(data[0].LED_BUILTIN).toBe('2');
+    expect(data[1].LED_BUILTIN).toBe('5');
   }
   );
 
   it('should sort N/A led values at end of list, if direction is asc', () => {
-    testReq(testset_answer_na);
+    createComponent([data_lolin_na, data_blynk]);
     const sort: Sort = { active: 'led', direction: 'asc' };
     component.sortData(sort);
     const data: BoardInfo[] = component.sortedData.data.slice();
-    expect(data[0].led).toBe('2');
-    expect(data[1].led).toBe('N/A');
+    expect(data[0].LED_BUILTIN).toBe('5');
+    expect(data[1].LED_BUILTIN).toBe('N/A');
   }
   );
 
   it('should sort N/A led values at beginning of list, if direction is desc', () => {
-    testReq(testset_answer_na + testset_na);
+    createComponent([data_lolin, data_lolin_na, data_wifiduino]);
     const sort: Sort = { active: 'led', direction: 'desc' };
     component.sortData(sort);
     const data: BoardInfo[] = component.sortedData.data.slice();
-    expect(data[0].led).toBe('N/A');
-    expect(data[1].led).toBe('N/A');
-    expect(data[2].led).toBe('2');
+    expect(data[0].LED_BUILTIN).toBe('N/A');
+    expect(data[1].LED_BUILTIN).toBe('N/A');
+    expect(data[2].LED_BUILTIN).toBe('2');
   }
   );
 
   it('should sort data by led desc', () => {
-    testReq(testset_answer);
     const sort: Sort = { active: 'led', direction: 'desc' };
     component.sortData(sort);
     const data: BoardInfo[] = component.sortedData.data.slice();
-    expect(data[0].led).toBe('5');
-    expect(data[1].led).toBe('2');
+    expect(data[0].LED_BUILTIN).toBe('5');
+    expect(data[1].LED_BUILTIN).toBe('2');
   }
   );
 
   it('should sort data by flash_size', () => {
-    const csvData = testset_answer + testset_generic;
-    testReq(csvData);
-
+    createComponent([data_lolin, data_blynk, data_generic]);
     const sort: Sort = { active: 'flash_size', direction: 'asc' };
     component.sortData(sort);
     const data: BoardInfo[] = component.sortedData.data.slice();
@@ -206,8 +206,7 @@ describe('BoardOverviewComponent', () => {
   );
 
   it('should sort data by flash_size na', () => {
-    testReq(testset_answer_na);
-
+    createComponent([data_lolin_na, data_wifiduino]);
     const sort: Sort = { active: 'flash_size', direction: 'asc' };
     component.sortData(sort);
     const data: BoardInfo[] = component.sortedData.data.slice();
@@ -218,9 +217,7 @@ describe('BoardOverviewComponent', () => {
   );
 
    it('should sort data by flash_size desc', () => {
-    const csvData = testset_answer + testset_generic;
-    testReq(csvData);
-
+    createComponent([data_lolin, data_blynk, data_generic]);
     const sort: Sort = { active: 'flash_size', direction: 'desc' };
     component.sortData(sort);
     const data: BoardInfo[] = component.sortedData.data.slice();
@@ -232,7 +229,7 @@ describe('BoardOverviewComponent', () => {
   );
 
   it('should sort data by mcu asc', () => {
-    testReq(testset_answer);
+    createComponent([data_lolin, data_blynk]);
     const sort: Sort = { active: 'mcu', direction: 'asc' };
     component.sortData(sort);
     const data: BoardInfo[] = component.sortedData.data.slice();
@@ -242,7 +239,7 @@ describe('BoardOverviewComponent', () => {
   );
 
   it('should sort data by variant asc', () => {
-    testReq(testset_answer);
+    createComponent([data_lolin, data_blynk]);
     const sort: Sort = { active: 'variant', direction: 'asc' };
     component.sortData(sort);
     const data: BoardInfo[] = component.sortedData.data.slice();
