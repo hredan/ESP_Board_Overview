@@ -11,6 +11,6 @@ import { ChildrenOutletContexts } from '@angular/router';
 })
 
 export class AppComponent {
-  title = 'ESP-Board Overview';
+  title = 'ESP Board Overview';
   private contexts = inject(ChildrenOutletContexts);
 }
