@@ -215,13 +215,15 @@ class CoreData:
                 board_data['variant'] = "N/A"
             else:
                 if self.core_name == "esp8266":
-                    board_data['linkPins'] = f"https://github.com/esp8266/Arduino/blob/{self.core_version}/variants/{board_data['variant']}/pins_arduino.h"
+                    board_data['linkPins'] = "https://github.com/esp8266/Arduino/blob/" \
+                        f"{self.core_version}/variants/{board_data['variant']}/pins_arduino.h"
                 elif self.core_name == "esp32":
-                    board_data['linkPins'] = f"https://github.com/espressif/arduino-esp32/blob/{self.core_version}/variants/{board_data['variant']}/pins_arduino.h"
+                    board_data['linkPins'] = "https://github.com/espressif/arduino-esp32/blob/" \
+                        f"{self.core_version}/variants/{board_data['variant']}/pins_arduino.h"
             if 'mcu' not in board_data:
                 board_data['mcu'] = "N/A"
 
             boards.append(board_data)
-            
+
         with open(filename, "w", encoding='utf8') as file:
             json.dump(boards, file, indent=4, ensure_ascii=False)

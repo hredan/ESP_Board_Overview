@@ -1,7 +1,8 @@
 """Test cases for the CoreData class."""
+import json
 import pytest
 from helper.core_data import CoreData
-import json
+
 
 @pytest.fixture(name="setup")
 def fixture_setup(tmp_path):
@@ -264,7 +265,8 @@ def test_export_json_esp32(setup_esp32, tmpdir):
         "LED_BUILTIN": "2",
         "mcu": "esp32",
         "flash_size": "[4MB]",
-        "linkPins": "https://github.com/espressif/arduino-esp32/blob/3.2.0/variants/d1_mini32/pins_arduino.h",
+        "linkPins": "https://github.com/espressif/arduino-esp32/blob/3.2.0/" \
+            "variants/d1_mini32/pins_arduino.h",
         "name": "WEMOS D1 MINI ESP32"
     }
     with open(file.strpath, 'r', encoding='utf8') as file:
