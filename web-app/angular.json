@@ -100,7 +100,7 @@
           }
         },
         "deploy": {
-          "builder": "angular-cli-ghpages:deploy"
+          "builder": "@luki117/angular-cli-ghpages:deploy"
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
