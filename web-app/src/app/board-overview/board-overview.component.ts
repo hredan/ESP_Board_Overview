@@ -5,7 +5,6 @@ import {MatInputModule} from '@angular/material/input';
 import { MatCheckboxModule, MatCheckboxChange } from '@angular/material/checkbox';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {Sort, MatSortModule} from '@angular/material/sort';
-import { HttpClient} from '@angular/common/http';
 import coreList_input from '../../../data/core_list.json';
 
 @Component({
@@ -25,11 +24,9 @@ export class BoardOverviewComponent implements OnInit {
   displayedColumns: string[] = ['name', 'board','variant', 'led', 'mcu', 'flash_size'];
   sortedData: MatTableDataSource<BoardInfo> = new MatTableDataSource<BoardInfo>([]);
   filterValue = '';
-  httpClient: HttpClient;
   coreList: Core[] = (coreList_input as Core[]);
   coreVersion = '';
 
-  constructor() { this.httpClient = inject(HttpClient); }
   ngOnInit() {
     this.totalBoardCount = this.dataSource().length;
     this.filteredBoardCount = this.dataSource().length;
