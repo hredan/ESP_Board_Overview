@@ -5,9 +5,20 @@ import { Esp8266BoardOverviewComponent } from './esp8266-board-overview/esp8266-
 import { Esp32BoardOverviewComponent } from './esp32-board-overview/esp32-board-overview.component';
 
 export const routes: Routes = [
-    { path: 'info', component: EspCoreOverviewComponent },
-    { path: 'esp8266', component: Esp8266BoardOverviewComponent },
-    { path: 'esp32', component: Esp32BoardOverviewComponent },
-    { path: '',   redirectTo: '/info', pathMatch: 'full' }, // redirect to `info`
-    { path: '**', component: PageNotFoundComponent },
+    { 
+        path: '',
+        component: EspCoreOverviewComponent
+    },
+    {
+        path: 'esp8266',
+        component: Esp8266BoardOverviewComponent
+    },
+    {
+        path: 'esp32',
+        component: Esp32BoardOverviewComponent
+    },
+    {
+        path: '**',
+        component: PageNotFoundComponent
+    },
 ];
