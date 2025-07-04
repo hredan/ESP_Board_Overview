@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink} from '@angular/router';
 //import { ChildrenOutletContexts, ActivatedRoute } from '@angular/router';
 // import { AppRoutingModule } from './app.routes';
-import { MatTabsModule, MatTabNavPanel } from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { EspCoreOverviewComponent } from "./esp-core-overview/esp-core-overview.component";
 import { Esp8266BoardOverviewComponent } from "./esp8266-board-overview/esp8266-board-overview.component";
 import { Esp32BoardOverviewComponent } from "./esp32-board-overview/esp32-board-overview.component";
@@ -19,7 +19,7 @@ export class AppComponent {
   links = ['Info', 'ESP8266', 'ESP32'];
   activeLink = this.links[0];
 
-  onActivate(event: any) {
+  onActivate(event: object) {
     // This method can be used to handle any actions when a route is activated
     //console.log('Activated route:', event);
     if (event instanceof EspCoreOverviewComponent) {
