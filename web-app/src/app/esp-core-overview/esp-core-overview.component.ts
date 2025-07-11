@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import coreList_input from '../../../data/core_list.json';
 import { RouterLinkActive, RouterLink } from '@angular/router';
+import { NavigationComponent } from '../navigation/navigation.component';
 
 @Component({
   selector: 'app-esp-core-overview',
-  imports: [MatTableModule, RouterLinkActive, RouterLink],
+  imports: [MatTableModule, RouterLinkActive, RouterLink, NavigationComponent],
   templateUrl: './esp-core-overview.component.html',
   styleUrl: './esp-core-overview.component.css'
 })
