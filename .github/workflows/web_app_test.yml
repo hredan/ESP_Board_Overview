@@ -23,7 +23,7 @@ jobs:
       - name: run tests
         run: |
           cd web-app
-          ng test --no-watch --no-progress --browsers=ChromeHeadlessCI
+          npm test
   web-app-build:
     runs-on: ubuntu-latest
     steps:
