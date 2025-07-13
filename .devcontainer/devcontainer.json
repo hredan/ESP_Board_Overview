@@ -21,11 +21,11 @@
 			"extensions": [
 				"eamodio.gitlens",
 				"mhutchie.git-graph",
-				"lucono.karma-test-explorer",
 				"Angular.ng-template",
 				"semasquare.vscode-coverage-gutters",
 				"actboy168.tasks",
-				"ms-python.python"
+				"ms-python.python",
+				"Orta.vscode-jest"
 			]
 		}
 	},

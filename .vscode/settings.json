@@ -1,11 +1,8 @@
 {
-    "karmaTestExplorer.projectWorkspaces": ["/workspaces/ESP_Board_Overview/web-app"],
-    "karmaTestExplorer.karmaConfFilePath": "/workspaces/ESP_Board_Overview/web-app/karma.conf.js",
-    "karmaTestExplorer.projectType": "angular",
-    "karmaTestExplorer.testFiles": [
-        "**/*.spec.ts"
-    ],
-    "karmaTestExplorer.testFramework": "jasmine",
+    "jestrunner.jestCommand": "npm run test --",
+    // "jestrunner.configPath": "./web-app/jest.config.js",
+    "jestrunner.projectPath": "./web-app",
+    // "jestrunner.changeDirectoryToWorkspaceRoot": true,
     "python.testing.pytestArgs": [
         "--ignore=./createTable.py",
         "./helper"
