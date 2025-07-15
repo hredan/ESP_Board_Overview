@@ -7,3 +7,4 @@ core_list*.txt
 node_modules
 .venv
 .coverage
+esp_data
