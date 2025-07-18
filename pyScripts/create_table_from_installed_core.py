@@ -50,11 +50,14 @@ if __name__ == "__main__":
     with open(core_list_path, 'w', encoding='utf-8') as f:
         json.dump(core_info_list, f, ensure_ascii=False, indent=4)
     for core_info in core_info_list:
-        cd = CoreData(core_info["core_name"], core_info["installed_version"])
-        print(f"core: {core_info['core_name']}")
+        core_name = core_info["core_name"]
+        core_version = core_info["installed_version"]
+        core_data_path = f"/home/vscode/.arduino15/packages/{core_name}/hardware/{core_name}/{core_version}"
+        cd = CoreData(core_name, core_version, core_data_path)
+        print(f"core: {core_name}")
         print(f"number of boards: {len(cd.boards)}")
         print(f"number of boards without led: {cd.num_of_boards_without_led}")
-        csv_path = os.path.join(esp_data_path, core_info['core_name'] + ".csv")
-        json_path = os.path.join(esp_data_path, core_info['core_name'] + ".json")
+        csv_path = os.path.join(esp_data_path, core_name + ".csv")
+        json_path = os.path.join(esp_data_path, core_name + ".json")
         cd.boards_export_csv(filename=csv_path, ignore_missing_led=False)
         cd.boards_export_json(filename=json_path)

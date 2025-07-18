@@ -16,11 +16,11 @@ class CoreData:
     information about the boards, including the LED_BUILTIN and flash size.
     """
     def __init__(self, core_name:str, core_version: str,
-                 arduino_path:str="/home/vscode/.arduino15"):
+                 core_path: str):
         self.core_name = core_name
         self.core_version = core_version
         self.num_of_boards_without_led = 0
-        self.core_path = arduino_path + f"/packages/{core_name}/hardware/{core_name}/{core_version}"
+        self.core_path = core_path
         if not os.path.exists(self.core_path):
             raise ValueError(f"Error: could not found {self.core_path}")
 
