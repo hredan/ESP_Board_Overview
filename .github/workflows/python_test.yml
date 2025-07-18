@@ -16,7 +16,7 @@ jobs:
           pip install -r requirements_test.txt
       - name: Run tests
         run: |
-          pytest --cov=helper --cov-fail-under=80 ./helper
+          pytest --cov=helper --cov-fail-under=80 ./pyScripts/helper
   pylint:
     runs-on: ubuntu-latest
     steps:
@@ -32,4 +32,4 @@ jobs:
           pip install -r requirements_test.txt
       - name: Run tests
         run: |
-          pylint -v ./create_table.py ./helper
+          pylint -v ./pyScripts/create_table.py ./pyScripts/helper

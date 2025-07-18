@@ -1,3 +1,11 @@
+#!python
+"""
+get_esp_data.py
+This script downloads and extracts ESP core source data from specified package index URLs.
+Part of repository: www.github.com/hredan/ESP_Board_Overview
+Author: hredan
+Copyright (c) 2025 hredan
+"""
 import os, shutil
 import urllib.request
 import json

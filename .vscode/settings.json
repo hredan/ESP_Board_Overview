@@ -5,12 +5,12 @@
     // "jestrunner.changeDirectoryToWorkspaceRoot": true,
     "python.testing.pytestArgs": [
         "--ignore=./createTable.py",
-        "./helper"
+        "./pyScripts/helper"
     ],
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./helper",
+        "./pyScripts/helper",
         "-p",
         "test_*.py"
     ],
