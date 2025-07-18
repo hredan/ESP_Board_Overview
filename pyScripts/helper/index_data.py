@@ -18,20 +18,19 @@ class IndexData:
     def __load_index_data(self):
         """ Load the index data from the JSON file.
         :return: Parsed JSON data."""
-        with open(self.package_index_path, 'r') as file:
+        with open(self.package_index_path, 'r', encoding="utf8") as file:
             index_data = json.load(file)
         return index_data
-    
+
     def get_core_name(self):
         """ Get the core name from the index data.
         :return: Core name as a string."""
         return self.index_data["packages"][0]["name"]
-    
+
     def get_last_core_version(self):
         """ Get the last core version from the index data.
         :return: Last core version as a string."""
         return self.index_data["packages"][0]["platforms"][0]["version"]
-
 
 def get_core_list():
     """Retrieve a list of core names from the index data.

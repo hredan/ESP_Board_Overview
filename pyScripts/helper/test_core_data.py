@@ -38,7 +38,7 @@ d1_mini.menu.eesz.4M.build.flash_size=4M
 #define LED_BUILTIN 2
     """
     (variant_path / "pins_arduino.h").write_text(pins_arduino_content)
-    return tmp_path
+    return core_path
 
 @pytest.fixture(name="setup_esp32")
 def fixture_setup_esp32(tmp_path):
@@ -66,7 +66,7 @@ d1_mini32.build.flash_size=4MB
 static const uint8_t LED_BUILTIN = 2;
     """
     (variant_path / "pins_arduino.h").write_text(pins_arduino_content)
-    return tmp_path
+    return core_path
 
 @pytest.fixture(name="setup_esp32_without_variant_flash_size")
 def fixture_setup_esp32_without_variant_flash_size(tmp_path):
@@ -83,7 +83,7 @@ d1_mini32.name=WEMOS D1 MINI ESP32
     boards_txt_path = core_path / "boards.txt"
     boards_txt_path.write_text(boards_txt_content)
 
-    return tmp_path
+    return core_path
 
 @pytest.fixture(name="setup_wrong_led_builtin_value")
 def fixture_setup_wrong_led_builtin_value(tmp_path):
@@ -111,7 +111,7 @@ d1_mini.menu.eesz.4M.build.flash_size=4M
 #define LED_BUILTIN wrong_value
     """
     (variant_path / "pins_arduino.h").write_text(pins_arduino_content)
-    return tmp_path
+    return core_path
 
 @pytest.fixture(name="setup_missing_board_txt")
 def fixture_setup_missing_board_txt(tmp_path):
@@ -121,7 +121,7 @@ def fixture_setup_missing_board_txt(tmp_path):
     core_path = tmp_path / "packages" / "esp8266" / "hardware" / "esp8266" / "2.7.4"
     core_path.mkdir(parents=True)
     pytest.core_path = core_path
-    return tmp_path
+    return core_path
 
 def test_core_data_initialization(setup):
     """Test the initialization of CoreData with a valid core path."""

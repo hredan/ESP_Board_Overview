@@ -6,7 +6,8 @@ Part of repository: www.github.com/hredan/ESP_Board_Overview
 Author: hredan
 Copyright (c) 2025 hredan
 """
-import os, shutil
+import os
+import shutil
 import urllib.request
 import json
 import zipfile
@@ -20,14 +21,10 @@ def cleanup_directory(directory_path):
     if os.path.exists(directory_path):
         for filename in os.listdir(directory_path):
             file_path = os.path.join(directory_path, filename)
-            try:
-                if os.path.isfile(file_path) or os.path.islink(file_path):
-                    os.unlink(file_path)
-                elif os.path.isdir(file_path):
-                    shutil.rmtree(file_path)
-            except Exception as e:
-                print('Failed to delete %s. Reason: %s' % (file_path, e))
-                exit(1)
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
     else:
         os.mkdir(directory_path)
 
@@ -37,12 +34,8 @@ def download_file(url, save_path):
     :param url: URL of the file to download.
     :param save_path: Path where the downloaded file will be saved.
     """
-    try:
-        urllib.request.urlretrieve(url, save_path)
-        print(f"Downloaded {url} to {save_path}")
-    except Exception as e:
-        print(f"Failed to download {url}. Reason: {e}")
-        exit(1)
+    urllib.request.urlretrieve(url, save_path)
+    print(f"Downloaded {url} to {save_path}")
 
 def read_json_file(file_path):
     """
@@ -71,17 +64,17 @@ def extract_zip_file(zip_path, extract_to):
         zip_ref.extractall(extract_to)
         print(f"Extracted {zip_path} to {extract_to}")
 
-def get_esp_data(directory_path, index_url):
+def get_esp_data(directory_path, url):
     """
     Main function to get ESP data.
     :param directory_path: Path to the directory where ESP data will be stored.
     """
 
-    index_file_name = get_file_name_from_url(index_url)
-    download_file(index_url, os.path.join(directory_path, index_file_name))
+    index_file_name = get_file_name_from_url(url)
+    download_file(url, os.path.join(directory_path, index_file_name))
 
     index_data = read_json_file(os.path.join(directory_path, index_file_name))
-    core_name = index_data["packages"][0]["name"]
+    core = index_data["packages"][0]["name"]
     last_core_version = index_data["packages"][0]["platforms"][0]["version"]
     last_source_url = index_data["packages"][0]["platforms"][0]["url"]
 
@@ -89,20 +82,20 @@ def get_esp_data(directory_path, index_url):
     download_file(last_source_url, os.path.join(directory_path, archive_name))
 
     extract_zip_file(os.path.join(directory_path, archive_name), directory_path)
-    
-    return core_name, last_core_version
+
+    return core, last_core_version
 
 
 if __name__ == "__main__":
-    directory_path = "./esp_data"
+    ESP_DATA_PATH = "./esp_data"
 
     index_list = [
         "https://espressif.github.io/arduino-esp32/package_esp32_index.json",
         "https://arduino.esp8266.com/stable/package_esp8266com_index.json"
     ]
-    
+
     # Get ESP data
-    cleanup_directory(directory_path)
+    cleanup_directory(ESP_DATA_PATH)
     for index_url in index_list:
-        core_name, last_version = get_esp_data(directory_path, index_url)
+        core_name, last_version = get_esp_data(ESP_DATA_PATH, index_url)
         print(f"Core: {core_name}, Last Version: {last_version}")
