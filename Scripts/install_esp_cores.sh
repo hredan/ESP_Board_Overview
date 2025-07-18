@@ -66,7 +66,8 @@ $TOOL core install esp32:esp32 --additional-urls $CORE_URL_ESP32
 $TOOL core update-index --additional-urls $CORE_URL_ESP8266
 $TOOL core install esp8266:esp8266 --additional-urls $CORE_URL_ESP8266
 
-$TOOL core list > core_list.txt
+mkdir -p ./esp_data
+$TOOL core list > ./esp_data/core_list.txt
 
 # cp ~/.arduino15/packages/esp32/hardware/esp32/3.2.0/boards.txt ./boards_esp32.txt
 # cp ~/.arduino15/packages/esp8266/hardware/esp8266/3.1.2/boards.txt ./boards_esp8266.txt

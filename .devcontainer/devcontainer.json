@@ -25,7 +25,8 @@
 				"semasquare.vscode-coverage-gutters",
 				"actboy168.tasks",
 				"ms-python.python",
-				"Orta.vscode-jest"
+				"Orta.vscode-jest",
+				"ms-python.pylint"
 			]
 		}
 	},

@@ -5,15 +5,16 @@
     // "jestrunner.changeDirectoryToWorkspaceRoot": true,
     "python.testing.pytestArgs": [
         "--ignore=./createTable.py",
-        "./helper"
+        "./pyScripts/helper"
     ],
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./helper",
+        "./pyScripts/helper",
         "-p",
         "test_*.py"
     ],
     "python.testing.pytestEnabled": true,
     "python.testing.unittestEnabled": false,
+    "python.defaultInterpreterPath": "/workspaces/ESP_Board_Overview/.venv/bin/python3",
 }

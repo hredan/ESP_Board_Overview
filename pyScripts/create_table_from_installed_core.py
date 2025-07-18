@@ -1,5 +1,5 @@
 """
-create_table.py
+create_table_from_installed_core.py
 This script generates a table of esp boards with information about board name,
 builtin led, and flashsize.
 
@@ -42,16 +42,24 @@ def get_installed_core_info(core_list_path_):
     return core_list
 
 if __name__ == "__main__":
-    script_path = os.path.realpath(os.path.dirname(__file__))
-    core_list_path = os.path.join(script_path, "core_list.txt")
+    ESP_DATA_PATH = "./esp_data"
+    # core_list.txt is created by Scripts/install_esp_cores.sh
+    core_list_path = os.path.join(ESP_DATA_PATH, "core_list.txt")
     core_info_list = get_installed_core_info(core_list_path)
 
-    with open('core_list.json', 'w', encoding='utf-8') as f:
+    core_list_path = os.path.join(ESP_DATA_PATH, "core_list.json")
+    with open(core_list_path, 'w', encoding='utf-8') as f:
         json.dump(core_info_list, f, ensure_ascii=False, indent=4)
     for core_info in core_info_list:
-        cd = CoreData(core_info["core_name"], core_info["installed_version"])
-        print(f"core: {core_info['core_name']}")
+        core_name = core_info["core_name"]
+        core_version = core_info["installed_version"]
+        CORE_DATA_PATH = "/home/vscode/.arduino15/packages/" + \
+            f"{core_name}/hardware/{core_name}/{core_version}"
+        cd = CoreData(core_name, core_version, CORE_DATA_PATH)
+        print(f"core: {core_name}")
         print(f"number of boards: {len(cd.boards)}")
         print(f"number of boards without led: {cd.num_of_boards_without_led}")
-        cd.boards_export_csv(filename=core_info['core_name']+".csv", ignore_missing_led=False)
-        cd.boards_export_json(filename=core_info['core_name']+".json")
+        csv_path = os.path.join(ESP_DATA_PATH, core_name + ".csv")
+        json_path = os.path.join(ESP_DATA_PATH, core_name + ".json")
+        cd.boards_export_csv(filename=csv_path, ignore_missing_led=False)
+        cd.boards_export_json(filename=json_path)
