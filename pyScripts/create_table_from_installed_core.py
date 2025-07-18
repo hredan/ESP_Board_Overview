@@ -42,16 +42,19 @@ def get_installed_core_info(core_list_path_):
     return core_list
 
 if __name__ == "__main__":
-    script_path = os.path.realpath(os.path.dirname(__file__))
-    core_list_path = os.path.join(script_path, "core_list.txt")
+    esp_data_path = "./esp_data"
+    core_list_path = os.path.join(esp_data_path, "core_list.txt")  # is created by Scripts/install_esp_cores.sh
     core_info_list = get_installed_core_info(core_list_path)
 
-    with open('core_list.json', 'w', encoding='utf-8') as f:
+    core_list_path = os.path.join(esp_data_path, "core_list.json")
+    with open(core_list_path, 'w', encoding='utf-8') as f:
         json.dump(core_info_list, f, ensure_ascii=False, indent=4)
     for core_info in core_info_list:
         cd = CoreData(core_info["core_name"], core_info["installed_version"])
         print(f"core: {core_info['core_name']}")
         print(f"number of boards: {len(cd.boards)}")
         print(f"number of boards without led: {cd.num_of_boards_without_led}")
-        cd.boards_export_csv(filename=core_info['core_name']+".csv", ignore_missing_led=False)
-        cd.boards_export_json(filename=core_info['core_name']+".json")
+        csv_path = os.path.join(esp_data_path, core_info['core_name'] + ".csv")
+        json_path = os.path.join(esp_data_path, core_info['core_name'] + ".json")
+        cd.boards_export_csv(filename=csv_path, ignore_missing_led=False)
+        cd.boards_export_json(filename=json_path)
