@@ -6,13 +6,13 @@
         {
             "label": "test web-app",
             "type": "shell",
-            "command": "/workspaces/ESP_Board_Overview/Scripts/web-test.sh",
+            "command": "/workspaces/esp-board-overview/Scripts/web-test.sh",
             "problemMatcher": []
         },
         {
             "label": "deploy web-app",
             "type": "shell",
-            "command": "/workspaces/ESP_Board_Overview/Scripts/deploy_web-app.sh",
+            "command": "/workspaces/esp-board-overview/Scripts/deploy_web-app.sh",
             "problemMatcher": []
         }
     ]

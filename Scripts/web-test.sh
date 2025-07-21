@@ -1,2 +1,2 @@
-cd /workspaces/ESP_Board_Overview/web-app
+cd /workspaces/esp-board-overview/web-app
 npm test

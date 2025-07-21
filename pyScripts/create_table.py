@@ -3,7 +3,7 @@ create_table.py
 This script generates a table of esp boards with information about board name,
 builtin led, and flashsize.
 
-Part of repository: www.gitub.com/hredan/ESP_Board_Overview
+Part of repository: www.gitub.com/hredan/esp-board-overview
 Author: hredan
 Copyright (c) 2025 hredan
 """

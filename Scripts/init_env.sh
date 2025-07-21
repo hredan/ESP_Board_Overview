@@ -5,10 +5,10 @@ sudo apt update
 sudo apt upgrade -y
 
 sudo apt install python3-venv -y
-python3 -m venv /workspaces/ESP_Board_Overview/.venv
-source /workspaces/ESP_Board_Overview/.venv/bin/activate
+python3 -m venv /workspaces/esp-board-overview/.venv
+source /workspaces/esp-board-overview/.venv/bin/activate
 pip install --upgrade pip
-pip install -r /workspaces/ESP_Board_Overview/requirements_test.txt
+pip install -r /workspaces/esp-board-overview/requirements_test.txt
 
 # install google chrome
 # cd ~
@@ -18,6 +18,6 @@ pip install -r /workspaces/ESP_Board_Overview/requirements_test.txt
 # export CHROME_BIN=/usr/bin/google-chrome
 
 # install web-app packages
-cd /workspaces/ESP_Board_Overview/web-app/
+cd /workspaces/esp-board-overview/web-app/
 npm install -g npm@latest
 npm install
