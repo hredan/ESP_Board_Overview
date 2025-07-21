@@ -27,7 +27,7 @@ class CoreData:
         self.boards_txt = f"{self.core_path}/boards.txt"
         if not os.path.exists(self.boards_txt):
             raise ValueError(f"Error: could not found {self.boards_txt}")
-        self.boards = self.__get_data()
+        self.boards, self.partitions = self.__get_data()
         self.__find_led_builtin()
         self.__set_boars_without_led()
 
@@ -49,6 +49,34 @@ class CoreData:
         match_mcu = re.match(name + r"\.build\.mcu=(.+)", line)
         if match_mcu:
             boards[name]["mcu"] = match_mcu.group(1)
+    
+    def __get_default_partition(self, line:str, partitions: dict, name:str):
+        match_partition = re.match(name + r"\.build\.partitions=(.+)", line)
+        if match_partition:
+            default_partition = match_partition.group(1)
+            partitions[name] = {"default": default_partition}
+
+    def __get_partition_name(self, line:str, partitions: dict, name:str):
+        pattern = name + r"\.menu\.PartitionScheme\.([^\.]+)=(.+)"
+        match_partition = re.match(pattern, line)
+        if match_partition:
+            partition_name = match_partition.group(1)
+            partitions_full_name = match_partition.group(2)
+            if "schemes" not in partitions[name]:
+                partitions[name]["schemes"] = {}
+            partitions[name]["schemes"][partition_name] = {"full_name":partitions_full_name}
+            return partition_name
+        return None
+
+    def __get_patition_build(self, line:str, partitions: dict, name:str, partitions_name:str):
+        pattern = name + r"\.menu\.PartitionScheme\." + partitions_name + r"\.build\.partitions=(.+)"
+        match_partition = re.match(pattern, line)
+        if match_partition:
+            partition_build = match_partition.group(1)
+            if "build" not in partitions[name]["schemes"][partitions_name]:
+                partitions[name]["schemes"][partitions_name]["build"] = partition_build
+            else:
+                print(f"Warning: {name} has more than one build partition for {partitions_name}")
 
     def __special_pattern_esp8266(self, line:str, boards: dict, name:str):
         pattern = name + r"\.menu\.eesz\.(.+)\.build\.flash_size=(.+)"
@@ -71,7 +99,9 @@ class CoreData:
 
     def __get_data(self):
         boards = {}
+        partitions = {}
         name=""
+        partitions_name = ""
         with open(self.boards_txt, 'r', encoding='utf8') as infile:
             for line in infile:
                 flash_size = None
@@ -87,6 +117,12 @@ class CoreData:
                     match_partition = re.match(name + r"\.build\.flash_size=(.+)", line)
                     if match_partition:
                         flash_size = match_partition.group(1)
+                    self.__get_default_partition(line, partitions, name)
+                    find_partition_name = self.__get_partition_name(line, partitions, name)
+                    if find_partition_name:
+                        partitions_name = find_partition_name
+                    self.__get_patition_build(line, partitions, name, partitions_name)
+
                 # store flash size
                 if flash_size:
                     if "flash_size" in boards[name]:
@@ -100,7 +136,7 @@ class CoreData:
                                 boards[name]["flash_size"].append(flash_size)
                     else:
                         boards[name]["flash_size"] = [flash_size]
-        return boards
+        return boards, partitions
 
     def __set_boars_without_led(self):
         boards_names = self.boards.keys()
@@ -191,6 +227,15 @@ class CoreData:
                 else:
                     mcu='N/A'
                 file.write(f"{name},{board_name},{variant},{led},{mcu},{flash_size}\n")
+
+    def partitions_export_json(self, filename:str):
+        """
+        Export the partition schemes of the boards to a JSON file.
+        :param filename: The name of the JSON file to export to.
+        :return: None
+        """
+        with open(filename, "w", encoding='utf8') as file:
+            json.dump(self.partitions, file, indent=4, ensure_ascii=False)
 
     def boards_export_json(self, filename:str):
         """
