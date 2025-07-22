@@ -1,6 +1,6 @@
 # ESP Board Overview
 This repository generates an ESP board overview for the ESP8266 and ESP32 core as github page.  
-[ESP Board Overview github page](https://hredan.github.io/esp-board_overview)
+[ESP Board Overview github page](https://hredan.github.io/esp-board-overview)
 
 # How it works
 
