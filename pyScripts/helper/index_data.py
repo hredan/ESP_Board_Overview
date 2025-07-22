@@ -1,6 +1,6 @@
 """
 This module provides functionality to load and manage package index data for ESP cores.
-Part of repository: www.github.com/hredan/ESP_Board_Overview
+Part of repository: www.github.com/hredan/esp-board-overview
 Author: hredan
 Copyright (c) 2025 hredan
 """

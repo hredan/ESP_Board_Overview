@@ -3,7 +3,7 @@ create_table.py
 This script generates a table of esp boards with information about board name,
 builtin led, and flashsize.
 
-Part of repository: www.gitub.com/hredan/ESP_Board_Overview
+Part of repository: www.gitub.com/hredan/esp-board-overview
 Author: hredan
 Copyright (c) 2025 hredan
 """
@@ -31,3 +31,5 @@ if __name__ == "__main__":
         # save data in json file
         json_path = os.path.join(ESP_DATA_PATH, core_info['core_name'] + ".json")
         cd.boards_export_json(filename=json_path)
+        cd.partitions_export_json(filename=os.path.join(ESP_DATA_PATH, core_info['core_name'] \
+                                                        + "_partitions.json"))

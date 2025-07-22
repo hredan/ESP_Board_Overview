@@ -32,7 +32,7 @@
 	},
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "/workspaces/ESP_Board_Overview/Scripts/init_env.sh"
+	"postCreateCommand": "/workspaces/esp-board-overview/Scripts/init_env.sh"
 
 	// Configure tool-specific properties.
 	// "customizations": {},

@@ -16,5 +16,5 @@
     ],
     "python.testing.pytestEnabled": true,
     "python.testing.unittestEnabled": false,
-    "python.defaultInterpreterPath": "/workspaces/ESP_Board_Overview/.venv/bin/python3",
+    "python.defaultInterpreterPath": "/workspaces/esp-board-overview/.venv/bin/python3",
 }

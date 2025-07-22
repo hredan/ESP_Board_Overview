@@ -15,9 +15,9 @@ export class EspCoreOverviewComponent implements OnInit {
   dataSource = this.coreList;
 
   ngOnInit() {
-    if (this.coreList.length == 2 && this.coreList[0].core_name == "esp32" && this.coreList[1].core_name == "esp8266") {
-      this.coreList[0].link = "/esp32";
-      this.coreList[1].link = "/esp8266";
+    if (this.coreList.length == 2 && this.coreList[0].core_name == "esp8266" && this.coreList[1].core_name == "esp32") {
+      this.coreList[0].link = "/esp8266";
+      this.coreList[1].link = "/esp32";
     }
     else {
       console.log("Error: core_list.json is not in the correct format");
