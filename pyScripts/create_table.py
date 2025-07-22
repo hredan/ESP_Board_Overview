@@ -31,4 +31,5 @@ if __name__ == "__main__":
         # save data in json file
         json_path = os.path.join(ESP_DATA_PATH, core_info['core_name'] + ".json")
         cd.boards_export_json(filename=json_path)
-        cd.partitions_export_json(filename=os.path.join(ESP_DATA_PATH, core_info['core_name'] + "_partitions.json"))
+        cd.partitions_export_json(filename=os.path.join(ESP_DATA_PATH, core_info['core_name'] \
+                                                        + "_partitions.json"))

@@ -49,7 +49,7 @@ class CoreData:
         match_mcu = re.match(name + r"\.build\.mcu=(.+)", line)
         if match_mcu:
             boards[name]["mcu"] = match_mcu.group(1)
-    
+
     def __get_default_partition(self, line:str, partitions: dict, name:str):
         match_partition = re.match(name + r"\.build\.partitions=(.+)", line)
         if match_partition:
@@ -69,7 +69,8 @@ class CoreData:
         return None
 
     def __get_patition_build(self, line:str, partitions: dict, name:str, partitions_name:str):
-        pattern = name + r"\.menu\.PartitionScheme\." + partitions_name + r"\.build\.partitions=(.+)"
+        pattern = name + r"\.menu\.PartitionScheme\." \
+            + partitions_name + r"\.build\.partitions=(.+)"
         match_partition = re.match(pattern, line)
         if match_partition:
             partition_build = match_partition.group(1)
