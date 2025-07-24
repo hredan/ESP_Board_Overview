@@ -7,15 +7,18 @@ import { Esp32BoardOverviewComponent } from './esp32-board-overview/esp32-board-
 export const routes: Routes = [
     { 
         path: '',
-        component: EspCoreOverviewComponent
+        component: EspCoreOverviewComponent,
+        title: 'ESP Board Overview'
     },
     {
         path: 'esp8266',
-        component: Esp8266BoardOverviewComponent
+        component: Esp8266BoardOverviewComponent,
+        title: 'ESP8266 Board Overview'
     },
     {
         path: 'esp32',
-        component: Esp32BoardOverviewComponent
+        component: Esp32BoardOverviewComponent,
+        title: 'ESP32 Board Overview'
     },
     {
         path: '**',
