@@ -2,14 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://hredan.github.io/esp-board-overview/</loc>
-        <lastmod>2025-07-11</lastmod>
+        <lastmod>2025-07-24</lastmod>
     </url>
     <url>
         <loc>https://hredan.github.io/esp-board-overview/esp32/</loc>
-        <lastmod>2025-07-11</lastmod>
+        <lastmod>2025-07-24</lastmod>
     </url>
     <url>
         <loc>https://hredan.github.io/esp-board-overview/esp8266/</loc>
-        <lastmod>2025-07-11</lastmod>
+        <lastmod>2025-07-24</lastmod>
     </url>
 </urlset>
