@@ -6,6 +6,8 @@ import { provideRouter } from '@angular/router';
 import { EspCoreOverviewComponent } from "./esp-core-overview/esp-core-overview.component";
 import { Esp8266BoardOverviewComponent } from "./esp8266-board-overview/esp8266-board-overview.component";
 import { Esp32BoardOverviewComponent } from "./esp32-board-overview/esp32-board-overview.component";
+import { Title } from '@angular/platform-browser';
+import { title } from 'process';
 
 describe('AppComponent', () => {
 
@@ -52,15 +54,17 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
 
-    app.onActivate(new EspCoreOverviewComponent());
+    const titleService = TestBed.inject(Title);
+
+    app.onActivate(new EspCoreOverviewComponent(titleService));
     expect(app.activeLink).toEqual('Info');
     expect(app.title).toEqual('ESP Board Overview');
 
-    app.onActivate(new Esp8266BoardOverviewComponent());
+    app.onActivate(new Esp8266BoardOverviewComponent(titleService));
     expect(app.activeLink).toEqual('ESP8266');
     expect(app.title).toEqual('ESP8266 Board Overview');
 
-    app.onActivate(new Esp32BoardOverviewComponent());
+    app.onActivate(new Esp32BoardOverviewComponent(titleService));
     expect(app.activeLink).toEqual('ESP32');
     expect(app.title).toEqual('ESP32 Board Overview');
   });

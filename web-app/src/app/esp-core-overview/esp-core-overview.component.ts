@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import coreList_input from '../../../data/core_list.json';
 import { RouterLinkActive, RouterLink } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-esp-core-overview',
@@ -13,6 +14,9 @@ export class EspCoreOverviewComponent implements OnInit {
   coreList: Core[] = (coreList_input as Core[]);
   displayedColumns: string[] = ['core_name', 'core', 'installed_version', 'link'];
   dataSource = this.coreList;
+  constructor(private titleService: Title) {
+    this.titleService.setTitle('ESP Core Overview');
+  }
 
   ngOnInit() {
     if (this.coreList.length == 2 && this.coreList[0].core_name == "esp8266" && this.coreList[1].core_name == "esp32") {
