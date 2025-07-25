@@ -7,8 +7,19 @@ Part of repository: www.gitub.com/hredan/esp-board-overview
 Author: hredan
 Copyright (c) 2025 hredan"""
 import re
-import os.path
 import json
+import logging
+import os
+
+LOG_FILE = "./esp_data/core_data.log"
+# if os.path.exists(LOG_FILE):
+#     os.remove(LOG_FILE)
+
+log_board = logging.getLogger(__name__ + ".board")
+log_board.setLevel(logging.ERROR)
+log_partition = logging.getLogger(__name__ + ".partition")
+logging.basicConfig(filename=LOG_FILE, filemode='w', level=logging.INFO)
+
 
 class CoreData:
     """
@@ -77,7 +88,8 @@ class CoreData:
             if "build" not in partitions[name]["schemes"][partitions_name]:
                 partitions[name]["schemes"][partitions_name]["build"] = partition_build
             else:
-                print(f"Warning: {name} has more than one build partition for {partitions_name}")
+                log_partition.warning("%s has more than one build partition for %s",
+                                      name, partitions_name)
 
     def __special_pattern_esp8266(self, line:str, boards: dict, name:str):
         pattern = name + r"\.menu\.eesz\.(.+)\.build\.flash_size=(.+)"
@@ -128,8 +140,10 @@ class CoreData:
                 if flash_size:
                     if "flash_size" in boards[name]:
                         if flash_size not in boards[name]["flash_size"]:
-                            print(f"Warning: {name} has more than on flash size " +
-                                  f"{boards[name]['flash_size']} {flash_size}")
+                            # print(f"Warning: {name} has more than on flash size " +
+                            #       f"{boards[name]['flash_size']} {flash_size}")
+                            log_board.warning("%s has more than one flash size: %s %s",
+                                           name, boards[name]['flash_size'], flash_size)
                             if flash_size == "512KB":
                                 # add 512KB to the beginning of the list
                                 boards[name]["flash_size"].insert(0, flash_size)
@@ -144,8 +158,8 @@ class CoreData:
         for board_name in boards_names:
             board_entries = self.boards[board_name].keys()
             if not 'LED_BUILTIN' in board_entries:
-                print(f"Error: could not find LED Entry for {board_name} variant: " +
-                      f"{self.boards[board_name]['variant']}")
+                log_board.warning("Could not find LED Entry for %s variant: %s",
+                               board_name, self.boards[board_name]['variant'])
                 self.boards[board_name]["LED_BUILTIN"]="N/A"
                 variant = self.boards[board_name]['variant']
                 file_path = f"{self.core_path}/variants/{variant}/pins_arduino.h"
@@ -153,7 +167,8 @@ class CoreData:
                     with open(file_path, 'r', encoding='utf8') as infile:
                         for line_num, line in enumerate(infile):
                             if "LED_BUILTIN" in line:
-                                print(f"{line_num} {line}")
+                                log_board.warning("LED could not parse: variant %s ln %d:%s",
+                                                  variant, line_num, line)
 
     def __find_led_builtin(self):
         boards_names = self.boards.keys()
@@ -163,7 +178,8 @@ class CoreData:
                 variant = self.boards[board_name]['variant']
                 file_path = f"{self.core_path}/variants/{variant}/pins_arduino.h"
                 if not os.path.isfile(file_path):
-                    print(f"Error: could not found {file_path}")
+                    log_board.error("Could not find pins_arduino.h for %s variant: %s",
+                                   board_name, variant)
                     self.boards[board_name]["LED_BUILTIN"]="N/A"
                 else:
                     with open(file_path, 'r', encoding='utf8') as infile:
