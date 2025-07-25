@@ -58,10 +58,10 @@ describe('AppComponent', () => {
 
     app.onActivate(new Esp8266BoardOverviewComponent());
     expect(app.activeLink).toEqual('ESP8266');
-    expect(app.title).toEqual('ESP8266 Board Overview');
+    expect(app.title).toEqual('ESP8266 Boards Arduino IDE');
 
     app.onActivate(new Esp32BoardOverviewComponent());
     expect(app.activeLink).toEqual('ESP32');
-    expect(app.title).toEqual('ESP32 Board Overview');
+    expect(app.title).toEqual('ESP32 Boards Arduino IDE');
   });
 });

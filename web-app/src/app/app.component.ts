@@ -27,11 +27,11 @@ export class AppComponent {
       this.title = 'ESP Board Overview';
     } else if (event instanceof Esp8266BoardOverviewComponent) {
       this.activeLink = 'ESP8266';
-      this.title = 'ESP8266 Board Overview';
+      this.title = 'ESP8266 Boards Arduino IDE';
     }
     else if (event instanceof Esp32BoardOverviewComponent) {
       this.activeLink = 'ESP32';
-      this.title = 'ESP32 Board Overview';
+      this.title = 'ESP32 Boards Arduino IDE';
     }
   }
 }
